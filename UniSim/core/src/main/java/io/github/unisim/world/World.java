@@ -32,7 +32,7 @@ public class World {
   private TiledMap map = new TmxMapLoader().load("map/medium_map.tmx");
   private float unitScale = 1f / 16f;
   private IsometricTiledMapRenderer renderer = new IsometricTiledMapRenderer(map, unitScale);
-  private Vector2 camPosition = new Vector2(150f, 0f);
+  private Vector2 camPosition = new Vector2(90f, -10f);
   private Vector2 panVelocity = new Vector2(0f, 0f);
   private float zoomVelocity = 0f;
   private final float timeStepSize = 0.001f;
