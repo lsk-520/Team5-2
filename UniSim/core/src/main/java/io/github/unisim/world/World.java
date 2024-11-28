@@ -19,6 +19,8 @@ import io.github.unisim.Point;
 import io.github.unisim.building.Building;
 import io.github.unisim.building.BuildingManager;
 import io.github.unisim.building.BuildingType;
+import io.github.unisim.event.Event;
+import io.github.unisim.event.EventManager;
 
 /**
  * A class that holds all the gameplay elements of the game UniSim.
@@ -45,12 +47,14 @@ public class World {
   private Matrix4 isoTransform;
   private Matrix4 invIsoTransform;
   private BuildingManager buildingManager;
+    private EventManager eventManager;
   private boolean canBuild;
   private Point mousePosInWorld;
   private Point btmLeft;
   private Point topRight;
   public Building selectedBuilding;
   public boolean selectedBuildingUpdated;
+  public Event currentEvent;
 
   /**
    * Create a new World.
@@ -59,6 +63,8 @@ public class World {
     camera.zoom = 0.05f;
     initIsometricTransform();
     buildingManager = new BuildingManager(isoTransform);
+    eventManager = new EventManager();
+
     selectedBuilding = null;
   }
 

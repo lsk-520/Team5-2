@@ -224,4 +224,18 @@ public class BuildingManager {
         building.flipped, false
     );
   }
+
+    /**
+     * Calculates the distance between the edges of two buildings.
+     * @param b1 - The first building
+     * @param b2 - The second building
+     * @return The distance between the edges of b1, b2.
+     */
+  public static float distance(Building b1, Building b2) {
+      float xdistance = (Math.abs((b1.location.x + (b1.size.x / 2f)) - (b2.location.x + (b2.size.x / 2f)))
+                         - ((b1.size.x / 2f) + (b2.size.x / 2f)));
+      float ydistance = (Math.abs((b1.location.y + (b1.size.y / 2f)) - (b2.location.y + (b2.size.y / 2f)))
+                         - ((b1.size.y / 2f) + (b2.size.y / 2f)));
+      return ((float) Math.sqrt(Math.pow(xdistance, 2) + Math.pow(ydistance, 2)));
+  }
 }

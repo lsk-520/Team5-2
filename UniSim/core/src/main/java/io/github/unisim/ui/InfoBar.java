@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import io.github.unisim.GameState;
+import io.github.unisim.score.Score;
 import io.github.unisim.Timer;
 import io.github.unisim.building.BuildingType;
 import io.github.unisim.world.World;
@@ -25,7 +26,8 @@ public class InfoBar {
   private Table buildingCountersTable = new Table();
   private Label[] buildingCounterLabels = new Label[4];
   private Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-  private Label scoreLabel = new Label("86%", skin);
+  //private Label scoreLabel = new Label("86%", skin);
+  private Label scoreLabel;
   private Label titleLabel = new Label("UniSim", skin);
   private Label timerLabel;
   private Texture pauseTexture = new Texture("ui/pause.png");
@@ -33,6 +35,7 @@ public class InfoBar {
   private Image pauseImage = new Image(pauseTexture);
   private Image playImage = new Image(playTexture);
   private Timer timer;
+  private Score score;
   private Cell<Label> timerLabelCell;
   private Cell<Label> scoreLabelCell;
   private Cell<Image> pauseButtonCell;
@@ -44,8 +47,9 @@ public class InfoBar {
 
    * @param stage - The stage on which to draw the InfoBar.
    */
-  public InfoBar(Stage stage, Timer timer, World world) {
+  public InfoBar(Stage stage, Timer timer, Score score, World world) {
     this.timer = timer;
+    this.score = score;
     this.world = world;
     buildingCounterCells = new Cell[4];
 
@@ -61,6 +65,7 @@ public class InfoBar {
 
     // Info Table
     timerLabel = new Label(timer.getRemainingTime(), skin);
+    scoreLabel = new Label(score.getScoreString(), skin);
     infoTable.center().center();
     pauseButtonCell = infoTable.add(playImage).align(Align.center);
     timerLabelCell = infoTable.add(timerLabel).align(Align.center);
@@ -98,6 +103,7 @@ public class InfoBar {
    */
   public void update() {
     timerLabel.setText(timer.getRemainingTime());
+    scoreLabel.setText(score.getScoreString());
     buildingCounterLabels[0].setText("Recreation: "
         + Integer.toString(world.getBuildingCount(BuildingType.RECREATION)));
     buildingCounterLabels[1].setText("Learning: "
