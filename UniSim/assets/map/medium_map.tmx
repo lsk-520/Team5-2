@@ -3,7 +3,7 @@
  <editorsettings>
   <export target="../eng1/new map/medium_map.tmx" format="tmx"/>
  </editorsettings>
- <tileset firstgid="1" source="../../Downloads/Team5-2-main/UniSim/assets/map/tileset.tsx"/>
+ <tileset firstgid="1" source="tileset.tsx"/>
  <layer id="1" name="Tile Layer 1" width="150" height="150">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
