@@ -69,6 +69,7 @@ public class GameScreen implements Screen {
     if (GameState.gameOver) {
       world.zoom((world.getMaxZoom() - world.getZoom()) * 2f);
       world.pan((90 - world.getCameraPos().x) / 10, -world.getCameraPos().y / 10);
+      eventBar.setVisible(false);
       gameOverMenu.render(delta);
     }
   }
@@ -93,10 +94,11 @@ public class GameScreen implements Screen {
 
     if (GameState.gameOver) {
       GameState.gameOver = false;
-      GameState.paused = true;
+      GameState.paused = false;
       timer.reset();
       score.reset();
       world.reset();
+      eventBar.reset();
       infoBar.reset();
       buildingMenu.reset();
       eventBar.reset();

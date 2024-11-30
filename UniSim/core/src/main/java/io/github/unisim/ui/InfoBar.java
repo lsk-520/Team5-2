@@ -108,10 +108,10 @@ public class InfoBar {
         + Integer.toString(world.getBuildingCount(BuildingType.RECREATION)));
     buildingCounterLabels[1].setText("Learning: "
         + Integer.toString(world.getBuildingCount(BuildingType.LEARNING)));
-    buildingCounterLabels[2].setText("Eating: "
-        + Integer.toString(world.getBuildingCount(BuildingType.EATING)));
-    buildingCounterLabels[3].setText("Sleeping: "
-        + Integer.toString(world.getBuildingCount(BuildingType.SLEEPING)));
+    buildingCounterLabels[2].setText("Health: "
+        + Integer.toString(world.getBuildingCount(BuildingType.HEALTH)));
+    buildingCounterLabels[3].setText("Accomm.: "
+        + Integer.toString(world.getBuildingCount(BuildingType.ACCOMMODATION)));
     pauseButtonCell.setActor(GameState.paused ? playImage : pauseImage);
   }
 

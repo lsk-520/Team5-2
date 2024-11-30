@@ -36,7 +36,7 @@ public class Timer {
   }
 
   /**
-   * Reset the timer to its' initial time value. 
+   * Reset the timer to its' initial time value.
    */
   public void reset() {
     remainingTime = initialTime;
@@ -54,6 +54,10 @@ public class Timer {
     int remainingSeconds = (int) Math.ceil(remainingTime / 1000 - 60 * remainingMinutes);
 
     return formatNum(remainingMinutes) + ":" + formatNum(remainingSeconds);
+  }
+
+  public float getTimeAsFloat(){
+      return remainingTime;
   }
 
   /**

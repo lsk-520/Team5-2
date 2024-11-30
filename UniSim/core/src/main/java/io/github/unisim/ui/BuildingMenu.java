@@ -52,7 +52,7 @@ public class BuildingMenu {
         new Point(),
         new Point(3, 3),
         false,
-        BuildingType.EATING,
+        BuildingType.HEALTH,
         "Canteen"
     ));
     buildings.add(new Building(
@@ -92,7 +92,7 @@ public class BuildingMenu {
         new Point(),
         new Point(11, 11),
         false,
-        BuildingType.SLEEPING,
+        BuildingType.ACCOMMODATION,
         "Student Accommodation"
     ));
 

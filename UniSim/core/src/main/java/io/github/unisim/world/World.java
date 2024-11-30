@@ -47,7 +47,7 @@ public class World {
   private Matrix4 isoTransform;
   private Matrix4 invIsoTransform;
   private BuildingManager buildingManager;
-    private EventManager eventManager;
+  private EventManager eventManager;
   private boolean canBuild;
   private Point mousePosInWorld;
   private Point btmLeft;
@@ -63,7 +63,7 @@ public class World {
     camera.zoom = 0.05f;
     initIsometricTransform();
     buildingManager = new BuildingManager(isoTransform);
-    eventManager = new EventManager();
+    eventManager = new EventManager(this);
 
     selectedBuilding = null;
   }
@@ -128,6 +128,17 @@ public class World {
       tileHighlightBatch.begin();
       highlightRegion(btmLeft, topRight, canBuild ? tileHighlight : errTileHighlight);
       tileHighlightBatch.end();
+    }
+
+    // Render the events bar
+    if (eventManager.hasEvent) {
+        currentEvent = eventManager.getCurrentEvent();
+    }
+    else {
+        currentEvent = null;
+    }
+    if (!GameState.paused && !GameState.gameOver) {
+        eventManager.eventTick();
     }
 
     // render buildings after all map related rendering
@@ -362,7 +373,7 @@ public class World {
    * and deselect the selected building.
    */
   public void reset() {
-    camPosition = new Vector2(150f, 0f);
+    camPosition = new Vector2(90f, -10f);
     panVelocity = new Vector2(0f, 0f);
     zoomVelocity = 0f;
     panDt = 0f;
@@ -371,5 +382,10 @@ public class World {
     initIsometricTransform();
     buildingManager = new BuildingManager(isoTransform);
     selectedBuilding = null;
+    eventManager.reset();
+  }
+
+  public Event getCurrentEvent() {
+      return currentEvent;
   }
 }
