@@ -52,7 +52,7 @@ public class BuildingMenu {
         new Point(),
         new Point(3, 3),
         false,
-        BuildingType.HEALTH,
+        BuildingType.FOOD,
         "Canteen"
     ));
     buildings.add(new Building(
@@ -65,16 +65,16 @@ public class BuildingMenu {
         BuildingType.LEARNING,
         "Library"
     ));
-    buildings.add(new Building(
-        new Texture(Gdx.files.internal("buildings/basketballCourt.png")),
-        0.0025f,
-        new Vector2(1f, -2.4f),
-        new Point(),
-        new Point(6, 9),
-        false,
-        BuildingType.RECREATION,
-        "Basketball Court"
-    ));
+//    buildings.add(new Building(
+//        new Texture(Gdx.files.internal("buildings/basketballCourt.png")),
+//        0.0025f,
+//        new Vector2(1f, -2.4f),
+//        new Point(),
+//        new Point(6, 9),
+//        false,
+//        BuildingType.RECREATION,
+//        "Basketball Court"
+//    ));
     buildings.add(new Building(
         new Texture(Gdx.files.internal("buildings/stadium.png")),
             0.0020f,
@@ -94,6 +94,16 @@ public class BuildingMenu {
         false,
         BuildingType.ACCOMMODATION,
         "Student Accommodation"
+    ));
+    buildings.add(new Building(
+        new Texture(Gdx.files.internal("buildings/pharmacy.png")),
+        0.0018f,
+        new Vector2(1.3f, -0.5f),
+        new Point(),
+        new Point(4,5),
+        false,
+        BuildingType.HEALTH,
+        "Pharmacy"
     ));
 
     table = new Table();

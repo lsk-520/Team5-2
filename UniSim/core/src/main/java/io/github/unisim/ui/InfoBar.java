@@ -24,7 +24,7 @@ public class InfoBar {
   private Table infoTable = new Table();
   private Table titleTable = new Table();
   private Table buildingCountersTable = new Table();
-  private Label[] buildingCounterLabels = new Label[4];
+  private Label[] buildingCounterLabels;
   private Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
   //private Label scoreLabel = new Label("86%", skin);
   private Label scoreLabel;
@@ -41,6 +41,7 @@ public class InfoBar {
   private Cell<Image> pauseButtonCell;
   private Cell<Table> buildingCountersTableCell;
   private Cell[] buildingCounterCells;
+  private int buildingTypesCount;
   private World world;
   /**
    * Create a new infoBar and draws its' components onto the provided stage.
@@ -51,10 +52,12 @@ public class InfoBar {
     this.timer = timer;
     this.score = score;
     this.world = world;
-    buildingCounterCells = new Cell[4];
+    buildingTypesCount = 5;
+    buildingCounterLabels = new Label[buildingTypesCount];
+    buildingCounterCells = new Cell[buildingTypesCount];
 
     // Building counter table
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < buildingTypesCount; i++) {
       buildingCounterLabels[i] = new Label("", skin);
     }
     buildingCounterCells[0] = buildingCountersTable.add(buildingCounterLabels[0]);
@@ -62,6 +65,8 @@ public class InfoBar {
     buildingCountersTable.row();
     buildingCounterCells[2] = buildingCountersTable.add(buildingCounterLabels[2]);
     buildingCounterCells[3] = buildingCountersTable.add(buildingCounterLabels[3]);
+    buildingCounterCells[4] = buildingCountersTable.add(buildingCounterLabels[4]);
+
 
     // Info Table
     timerLabel = new Label(timer.getRemainingTime(), skin);
@@ -112,6 +117,8 @@ public class InfoBar {
         + Integer.toString(world.getBuildingCount(BuildingType.HEALTH)));
     buildingCounterLabels[3].setText("Accomm.: "
         + Integer.toString(world.getBuildingCount(BuildingType.ACCOMMODATION)));
+    buildingCounterLabels[4].setText("Food: "
+        + Integer.toString(world.getBuildingCount(BuildingType.FOOD)));
     pauseButtonCell.setActor(GameState.paused ? playImage : pauseImage);
   }
 
@@ -128,7 +135,7 @@ public class InfoBar {
 
     float counterTableWidth = height * 0.27f;
     buildingCountersTableCell.width(counterTableWidth).height(height * 0.05f);
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < buildingTypesCount; i++) {
       buildingCounterLabels[i].setFontScale(height * 0.0015f);
       buildingCounterCells[i].width(counterTableWidth * 0.5f).height(height * 0.025f);
     }
