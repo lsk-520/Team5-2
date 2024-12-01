@@ -6,6 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import io.github.unisim.Timer;
 import io.github.unisim.building.BuildingType;
 
+
+/**
+ * Represents an event affecting gameplay for the player.
+ */
 public class Event {
 
     public String name;
@@ -14,8 +18,11 @@ public class Event {
 
     // The initial score factor to change score by, and the value by which a chosen
     // building type will increase the score by for new placements
+
+    /**The initial factor to change score by.*/
     private int scoreFactor;
     private BuildingType buildingType;
+    /**The value by which a chosen building type will increase the score by for new placements.*/
     private int buildingTypeScoreIncrease;
 
     // Fields for having score decrement per certain time increment - scoreFactor
@@ -28,9 +35,17 @@ public class Event {
     // All events last 30 seconds
     private Timer timer = new Timer(30_000f);
 
-    // IMPLEMENT DOCSTRING PLS!!
-    // Non-ticking event, where scoreFactor changes score initially (as factor), and new buildings of type specified
-    // update the score by buildingTypeScoreIncrease
+    /**A non-ticking event.
+     *
+     * <p>Score changes by a constant amount at the start of the event. Score can be changed by building placement.</p>
+     *
+     * @param name The name of the event.
+     * @param description A short description of the event and its implications to the player.
+     * @param icon The icon of the event to be displayed on the event bar.
+     * @param scoreFactor The factor score changes by at the start of the event.
+     * @param buildingTypeScoreIncrease The factor score then changes by when a building is placed.
+     * @param buildingType The type of building that must be placed.
+     */
     public Event(String name, String description, Image icon, int scoreFactor, int buildingTypeScoreIncrease,
                  BuildingType buildingType) {
         this.name = name;
@@ -42,9 +57,14 @@ public class Event {
         this.isTickEvent = false;
     }
 
-    // IMPLEMENT DOCSTRING PLS!!
-    // Ticking event, where scoreFactor changes the score incrementally (as increment) over a certain period
-    // of ms (tickPeriod)
+    /**A ticking event - score changes incrementally over time.
+     *
+     * @param name The name of the event.
+     * @param description A short description of the event and its implications.
+     * @param icon The icon of the event to be displayed.
+     * @param scoreFactor The factor score changes by every tickPeriod for duration of the event.
+     * @param tickPeriod I think we can get rid of this
+     */
     public Event(String name, String description, Image icon, int scoreFactor, float tickPeriod) {
         this.name = name;
         this.description = description;
