@@ -7,6 +7,7 @@ package io.github.unisim.building;
 public enum BuildingType {
   RECREATION,
   LEARNING,
-  SLEEPING,
-  EATING
+  ACCOMMODATION,
+  HEALTH,
+  FOOD
 }

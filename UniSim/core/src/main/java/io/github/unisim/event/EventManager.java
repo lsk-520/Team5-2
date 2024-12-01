@@ -1,13 +1,43 @@
 package io.github.unisim.event;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import io.github.unisim.Timer;
+import io.github.unisim.building.BuildingType;
+import io.github.unisim.ui.GameScreen;
+import io.github.unisim.world.World;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 public class EventManager {
     private ArrayList<Event> events = new ArrayList<>();
+    public boolean hasEvent = false;
     private int currentEvent;
+    private World world;
+    private Timer eventQueueTimer;
+    private Random rand = new Random();
 
-    public EventManager() {
+    public EventManager(World world) {
         currentEvent = 0;
+        eventQueueTimer = new Timer(30_000f);
+        this.world = world;
+
+        events.add(new Event("F. Flu",
+            "Freshers flu is running rampant!\nPlace more health buildings to regain student satisfaction.",
+            new Image(new Texture(Gdx.files.internal("buildings/pharmacy.png"))),
+            2, 5, BuildingType.HEALTH));
+        events.add (new Event("Bed bugs",
+            "A block is infested with bed bugs!\nStudent satisfaction decreases by 0.5% per second.",
+            new Image(new Texture(Gdx.files.internal("buildings/accommodation.png"))),
+            1,
+            2000f));
+        events.add (new Event("Fee Rise",
+            "Student tuition fees have risen.\nStudent satisfaction decreases by 1% per second.",
+            new Image(new Texture(Gdx.files.internal("buildings/library.png"))),
+            1,
+            1000f));
     }
 
     public Event getCurrentEvent() {
@@ -19,9 +49,31 @@ public class EventManager {
     }
 
     public void nextEvent() {
-        if (events.size() > currentEvent) {
-            // CHANGE - need to decide what handles the events changing
-            currentEvent = events.size() + 1;
+        int nextEvent = currentEvent;
+        while (currentEvent == nextEvent) { nextEvent = rand.nextInt(events.size()); }
+        currentEvent = nextEvent;
+    }
+
+    public String eventTick() {
+        if (hasEvent) {
+            Event event = getCurrentEvent();
+            int score = - event.tick();
+            hasEvent = !event.finished;
+            if (!hasEvent) { eventQueueTimer.reset(); }
+            return event.getRemainingTime();
+        }
+        else {
+            hasEvent = !eventQueueTimer.tick(Gdx.graphics.getDeltaTime() * 1000f);
+            if (hasEvent) { nextEvent(); }
+        }
+        return "N/A";
+    }
+
+    public void reset() {
+        hasEvent = false;
+        eventQueueTimer.reset();
+        for (Event event : events) {
+            event.reset();
         }
     }
 }
