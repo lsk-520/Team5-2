@@ -79,9 +79,10 @@ public class Event {
 
         finished = !timer.tick(Gdx.graphics.getDeltaTime() * 1000f);
         if (isTickEvent) {
-            float currentTimeInterval = (30_000f % tickPeriod);
-            if (currentTimeInterval < lastTickPeriod) { changeScore = true; }
+            float currentTimeInterval = (timer.getTimeAsFloat() % tickPeriod);
+            if (currentTimeInterval > lastTickPeriod) { changeScore = true; }
             lastTickPeriod = currentTimeInterval;
+            //Gdx.app.log("Tick", String.valueOf(currentTimeInterval));
         }
         if (finished) {
             timer.reset();

@@ -57,7 +57,7 @@ public class EventManager {
     public float eventTick() {
         if (hasEvent) {
             Event event = getCurrentEvent();
-            float score = - event.tick();
+            float score = -event.tick();
             hasEvent = !event.finished;
             if (!hasEvent) { eventQueueTimer.reset(); }
             return score;
