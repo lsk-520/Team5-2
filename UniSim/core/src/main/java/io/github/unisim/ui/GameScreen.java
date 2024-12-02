@@ -19,7 +19,7 @@ import io.github.unisim.world.WorldInputProcessor;
  * Supports pausing the game with a pause menu.
  */
 public class GameScreen implements Screen {
-  private World world = new World();
+  private World world;
   private Stage stage = new Stage(new ScreenViewport());
   private InfoBar infoBar;
   private BuildingMenu buildingMenu;
@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
   private Timer timer;
   private Score score;
   private InputProcessor uiInputProcessor = new UiInputProcessor(stage);
-  private InputProcessor worldInputProcessor = new WorldInputProcessor(world);
+  private InputProcessor worldInputProcessor;
   private InputMultiplexer inputMultiplexer = new InputMultiplexer();
   private GameOverMenu gameOverMenu = new GameOverMenu();
 
@@ -36,7 +36,9 @@ public class GameScreen implements Screen {
    */
   public GameScreen() {
     timer = new Timer(300_000);
-    score = new Score(0);
+    score = new Score(100);
+    world = new World(score);
+    worldInputProcessor = new WorldInputProcessor(world);
     infoBar = new InfoBar(stage, timer, score, world);
     buildingMenu = new BuildingMenu(stage, world);
     eventBar = new EventBar(stage, world);

@@ -20,7 +20,7 @@ public class Event {
     // building type will increase the score by for new placements
 
     /**The initial factor to change score by.*/
-    private int scoreFactor;
+    private float scoreFactor;
     private BuildingType buildingType;
     /**The value by which a chosen building type will increase the score by for new placements.*/
     private int buildingTypeScoreIncrease;
@@ -74,7 +74,7 @@ public class Event {
         this.isTickEvent = true;
     }
 
-    public int tick() {
+    public float tick() {
         boolean changeScore = false;
 
         finished = !timer.tick(Gdx.graphics.getDeltaTime() * 1000f);

@@ -21,6 +21,7 @@ import io.github.unisim.building.BuildingManager;
 import io.github.unisim.building.BuildingType;
 import io.github.unisim.event.Event;
 import io.github.unisim.event.EventManager;
+import io.github.unisim.score.Score;
 
 /**
  * A class that holds all the gameplay elements of the game UniSim.
@@ -55,11 +56,13 @@ public class World {
   public Building selectedBuilding;
   public boolean selectedBuildingUpdated;
   public Event currentEvent;
+  private Score score;
 
   /**
    * Create a new World.
    */
-  public World() {
+  public World(Score score) {
+    this.score = score;
     camera.zoom = 0.05f;
     initIsometricTransform();
     buildingManager = new BuildingManager(isoTransform);
@@ -138,7 +141,7 @@ public class World {
         currentEvent = null;
     }
     if (!GameState.paused && !GameState.gameOver) {
-        eventManager.eventTick();
+        score.incrementScore(eventManager.eventTick());
     }
 
     // render buildings after all map related rendering

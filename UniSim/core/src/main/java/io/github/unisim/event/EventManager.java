@@ -54,19 +54,19 @@ public class EventManager {
         currentEvent = nextEvent;
     }
 
-    public String eventTick() {
+    public float eventTick() {
         if (hasEvent) {
             Event event = getCurrentEvent();
-            int score = - event.tick();
+            float score = - event.tick();
             hasEvent = !event.finished;
             if (!hasEvent) { eventQueueTimer.reset(); }
-            return event.getRemainingTime();
+            return score;
         }
         else {
             hasEvent = !eventQueueTimer.tick(Gdx.graphics.getDeltaTime() * 1000f);
             if (hasEvent) { nextEvent(); }
         }
-        return "N/A";
+        return 0;
     }
 
     public void reset() {
