@@ -26,7 +26,9 @@ public class TimerTests {
         // timer.tick should return true when the remaining time is > 0
         // and return false when remaining time is <= 0
         assertTrue(timer.tick(10_000));
+        assertTrue(timer.isRunning());
         assertFalse(timer.tick(90_000));
+        assertFalse(timer.isRunning());
     }
 
     /**
@@ -38,5 +40,11 @@ public class TimerTests {
         timer.tick(20_000);
         timer.reset();
         assertEquals(timer.getRemainingTime(), "01:30");
+    }
+
+    @Test
+    public void getTimeAsFloatTest(){
+        Timer timer = new Timer(90_000);
+        assertEquals(timer.getTimeAsFloat(), 90_000);
     }
 }
