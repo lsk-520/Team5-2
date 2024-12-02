@@ -11,6 +11,10 @@ import io.github.unisim.world.World;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+/**
+ * Manages the events that run in the game, and their execution.
+ */
 public class EventManager {
     private ArrayList<Event> events = new ArrayList<>();
     public boolean hasEvent = false;
@@ -19,6 +23,10 @@ public class EventManager {
     private Timer eventQueueTimer;
     private Random rand = new Random();
 
+
+    /**
+     * @param world The world of the game.
+     */
     public EventManager(World world) {
         currentEvent = 0;
         eventQueueTimer = new Timer(30_000f);
@@ -54,6 +62,11 @@ public class EventManager {
         currentEvent = nextEvent;
     }
 
+
+    /**Handles the event timer, and the wait timer.
+     *
+     * @return The amount the score should change by.
+     */
     public float eventTick() {
         if (hasEvent) {
             Event event = getCurrentEvent();

@@ -74,6 +74,9 @@ public class Event {
         this.isTickEvent = true;
     }
 
+    /**The timer of the event.
+     * <p>Handles the ui of the timer of the event, and the score changing each tick.</p>
+     * @return The amount the score should change by.*/
     public float tick() {
         boolean changeScore = false;
 
