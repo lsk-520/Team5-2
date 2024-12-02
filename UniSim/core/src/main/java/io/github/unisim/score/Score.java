@@ -21,7 +21,7 @@ public class Score {
     }
 
     public String getScoreString() {
-        return String.valueOf(score) + "%";
+        return String.valueOf(Math.round(score)) + "%";
     }
 
     public void calculateScore(ScoreModifierType modifier) {

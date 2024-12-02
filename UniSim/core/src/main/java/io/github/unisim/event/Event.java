@@ -74,14 +74,18 @@ public class Event {
         this.isTickEvent = true;
     }
 
+    /**The timer of the event.
+     * <p>Handles the ui of the timer of the event, and the score changing each tick.</p>
+     * @return The amount the score should change by.*/
     public float tick() {
         boolean changeScore = false;
 
         finished = !timer.tick(Gdx.graphics.getDeltaTime() * 1000f);
         if (isTickEvent) {
-            float currentTimeInterval = (30_000f % tickPeriod);
-            if (currentTimeInterval < lastTickPeriod) { changeScore = true; }
+            float currentTimeInterval = (timer.getTimeAsFloat() % tickPeriod);
+            if (currentTimeInterval > lastTickPeriod) { changeScore = true; }
             lastTickPeriod = currentTimeInterval;
+            //Gdx.app.log("Tick", String.valueOf(currentTimeInterval));
         }
         if (finished) {
             timer.reset();

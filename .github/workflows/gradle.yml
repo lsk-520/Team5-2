@@ -35,8 +35,8 @@ jobs:
     - name: upload JAR
       uses: actions/upload-artifact@v4.4.3
       with:
-        name: unisim.jar
-        path: UniSim/lwjgl3/build/libs/unisim.jar
+        name: UniSim.jar
+        path: UniSim/lwjgl3/build/libs/UniSim.jar
 
   dependency-submission:
 
