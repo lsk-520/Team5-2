@@ -8,6 +8,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import io.github.unisim.GameState;
 import io.github.unisim.Point;
+import io.github.unisim.event.Event;
+import io.github.unisim.world.World;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +25,11 @@ public class BuildingManager {
   private Map<BuildingType, Integer> buildingCounts = new HashMap<>();
   private Matrix4 isoTransform;
   private Building previewBuilding;
+  private World world;
 
-  public BuildingManager(Matrix4 isoTransform) {
+  public BuildingManager(Matrix4 isoTransform, World world) {
     this.isoTransform = isoTransform;
+    this.world = world;
   }
 
   /**
@@ -99,6 +104,13 @@ public class BuildingManager {
     }
   }
 
+//  public boolean buildingTypeExists(BuildingType buildingType) {
+//      if (buildingCounts.containsKey(buildingType) && buildingCounts.get(buildingType) > 0) {
+//          return true;
+//      }
+//      return false;
+//  }
+
   /**
    * Handle placement of a building into the world by determining
    * the correct draw order and updating the building counters.
@@ -146,7 +158,25 @@ public class BuildingManager {
     }
     buildings.add(i, building);
     updateCounters(building);
+    updateScore(building);
     return i;
+  }
+
+    /**
+     * Updates the score if a building has been placed on the map, that is needed
+     * for the current event.
+     *
+     * @param building - A reference to the building object that was placed
+     */
+  private void updateScore(Building building) {
+      if (building == previewBuilding) {
+          return;
+      }
+      Event currentEvent = world.currentEvent;
+      if (currentEvent != null &&
+          currentEvent.getBuildingType() == building.type) {
+          world.updateScore(currentEvent.getAdjustment());
+      }
   }
 
   /**

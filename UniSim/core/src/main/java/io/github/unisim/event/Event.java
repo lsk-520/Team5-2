@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import io.github.unisim.Timer;
+import io.github.unisim.building.BuildingManager;
 import io.github.unisim.building.BuildingType;
 
 
@@ -24,6 +25,7 @@ public class Event {
     private BuildingType buildingType;
     /**The value by which a chosen building type will increase the score by for new placements.*/
     private int buildingTypeScoreIncrease;
+    private float scoreIncreased;
 
     // Fields for having score decrement per certain time increment - scoreFactor
     // will be used as the value to change by
@@ -33,7 +35,8 @@ public class Event {
     public boolean finished = false;
 
     // All events last 30 seconds
-    private Timer timer = new Timer(30_000f);
+    float initialTime = 10_000f;
+    private Timer timer = new Timer(initialTime);
 
     /**A non-ticking event.
      *
@@ -42,8 +45,8 @@ public class Event {
      * @param name The name of the event.
      * @param description A short description of the event and its implications to the player.
      * @param icon The icon of the event to be displayed on the event bar.
-     * @param scoreFactor The factor score changes by at the start of the event.
-     * @param buildingTypeScoreIncrease The factor score then changes by when a building is placed.
+     * @param scoreFactor The amount score changes by at the start of the event.
+     * @param buildingTypeScoreIncrease The score that can be gained back by placing buildings.
      * @param buildingType The type of building that must be placed.
      */
     public Event(String name, String description, Image icon, int scoreFactor, int buildingTypeScoreIncrease,
@@ -54,6 +57,7 @@ public class Event {
         this.scoreFactor = scoreFactor;
         this.buildingType = buildingType;
         this.buildingTypeScoreIncrease = buildingTypeScoreIncrease;
+        scoreIncreased = 0;
         this.isTickEvent = false;
     }
 
@@ -62,8 +66,8 @@ public class Event {
      * @param name The name of the event.
      * @param description A short description of the event and its implications.
      * @param icon The icon of the event to be displayed.
-     * @param scoreFactor The factor score changes by every tickPeriod for duration of the event.
-     * @param tickPeriod I think we can get rid of this
+     * @param scoreFactor The amount score changes by every tickPeriod for duration of the event.
+     * @param tickPeriod The amount of time over which the score changes by scoreFactor
      */
     public Event(String name, String description, Image icon, int scoreFactor, float tickPeriod) {
         this.name = name;
@@ -79,23 +83,64 @@ public class Event {
      * @return The amount the score should change by.*/
     public float tick() {
         boolean changeScore = false;
+        float scoreChange = scoreFactor;
 
         finished = !timer.tick(Gdx.graphics.getDeltaTime() * 1000f);
+        // If a tick event is in play, adjust the timer and return how much the score needs to change by.
         if (isTickEvent) {
             float currentTimeInterval = (timer.getTimeAsFloat() % tickPeriod);
             if (currentTimeInterval > lastTickPeriod) { changeScore = true; }
             lastTickPeriod = currentTimeInterval;
-            //Gdx.app.log("Tick", String.valueOf(currentTimeInterval));
+        }
+        else {
+            // Initial score adjustment at the start of the event.
+            if (scoreFactor != 0) { changeScore = true; }
+            //else { scoreFactor = buildingTypeScoreIncrease; }
+            scoreFactor = 0;
         }
         if (finished) {
             timer.reset();
         }
 
-        return changeScore ? scoreFactor : 0;
+        return changeScore ? scoreChange : 0;
     }
 
     public String getRemainingTime(){
         return timer.getRemainingTime();
+    }
+
+    public BuildingType getBuildingType() {
+        if (!isTickEvent) {
+            return buildingType;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public float getScoreFactor() {
+        return scoreFactor;
+    }
+
+    /**
+     * Calculates the score increment that can be gained when the correct building type is placed
+     * during a non-tick event. The score gained is proportional to the time since the start
+     * of the event, and the score lost from the event.
+     *
+     * @return The score gained.
+     */
+    public float getAdjustment() {
+        float time = timer.getTimeAsFloat() / initialTime;
+        float scoreGain = buildingTypeScoreIncrease * time * 0.8f;
+        if (scoreIncreased + scoreGain >= buildingTypeScoreIncrease) {
+            scoreGain = buildingTypeScoreIncrease - scoreIncreased;
+        }
+        scoreIncreased += scoreGain;
+        return scoreGain;
+    }
+
+    public boolean isTickEvent() {
+        return isTickEvent;
     }
 
     public void reset() {

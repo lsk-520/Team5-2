@@ -19,6 +19,7 @@ public class Building {
   public boolean flipped;
   public BuildingType type;
   public String name;
+  public boolean placed;
 
   /**
    * Create a new building to display in the building menu and place in the world.
@@ -42,5 +43,6 @@ public class Building {
     this.flipped = flipped;
     this.type = type;
     this.name = name;
+    placed = false;
   }
 }

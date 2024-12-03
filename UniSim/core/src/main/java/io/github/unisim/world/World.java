@@ -65,7 +65,7 @@ public class World {
     this.score = score;
     camera.zoom = 0.05f;
     initIsometricTransform();
-    buildingManager = new BuildingManager(isoTransform);
+    buildingManager = new BuildingManager(isoTransform, this);
     eventManager = new EventManager(this);
 
     selectedBuilding = null;
@@ -371,6 +371,10 @@ public class World {
     return buildingManager.getBuildingCount(type);
   }
 
+  public void updateScore(float scoreChange) {
+      score.incrementScore(scoreChange);
+  }
+
   /**
    * Set the camera position to the starting point, rebuild the isometry matrices
    * and deselect the selected building.
@@ -383,7 +387,7 @@ public class World {
     zoomDt = 0f;
     camera.zoom = 0.05f;
     initIsometricTransform();
-    buildingManager = new BuildingManager(isoTransform);
+    buildingManager = new BuildingManager(isoTransform, this);
     selectedBuilding = null;
     eventManager.reset();
   }
