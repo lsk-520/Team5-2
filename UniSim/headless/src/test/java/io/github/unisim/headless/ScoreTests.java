@@ -17,6 +17,10 @@ public class ScoreTests {
     public void incrementScoreTest(){
         score.incrementScore(10);
         assertEquals(score.getScore(), 20);
+        score.incrementScore(150);
+        assertEquals(score.getScore(), 100);
+        score.incrementScore(-200);
+        assertEquals(score.getScore(), 0);
     }
 
     @Test
