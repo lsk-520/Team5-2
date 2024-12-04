@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TimerTests {
+    Timer timer = new Timer(90_000);
     /**
      * Tests that the tick function of the timer removes time correctly
      */
     @Test
     public void tickTest(){
-        Timer timer = new Timer(90_000);
         assertEquals(timer.getRemainingTime(), "01:30");
         timer.tick(10_000);
         assertEquals(timer.getRemainingTime(), "01:20");
@@ -22,7 +22,6 @@ public class TimerTests {
      */
     @Test
     public void hasFinishedTest(){
-        Timer timer = new Timer(90_000);
         // timer.tick should return true when the remaining time is > 0
         // and return false when remaining time is <= 0
         assertTrue(timer.tick(10_000));
@@ -36,7 +35,6 @@ public class TimerTests {
      */
     @Test
     public void resetTest(){
-        Timer timer = new Timer(90_000);
         timer.tick(20_000);
         timer.reset();
         assertEquals(timer.getRemainingTime(), "01:30");
@@ -44,7 +42,6 @@ public class TimerTests {
 
     @Test
     public void getTimeAsFloatTest(){
-        Timer timer = new Timer(90_000);
         assertEquals(timer.getTimeAsFloat(), 90_000);
     }
 }
