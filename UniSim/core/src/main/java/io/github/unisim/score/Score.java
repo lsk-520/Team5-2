@@ -24,17 +24,6 @@ public class Score {
         return String.valueOf(Math.round(score)) + "%";
     }
 
-    public void calculateScore(ScoreModifierType modifier) {
-        // building should be close together
-        // check that no building is far away
-
-        // event reactions
-
-        // achievements modifier
-
-
-    }
-
     public void incrementScore(float inc) {
         float newScore = score;
         newScore += inc;
