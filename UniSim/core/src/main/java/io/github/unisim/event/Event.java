@@ -35,7 +35,7 @@ public class Event {
     public boolean finished = false;
 
     // All events last 30 seconds
-    float initialTime = 10_000f;
+    float initialTime = 30_000f;
     private Timer timer = new Timer(initialTime);
 
     /**A non-ticking event.

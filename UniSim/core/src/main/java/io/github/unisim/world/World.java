@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.unisim.GameState;
 import io.github.unisim.Point;
+import io.github.unisim.achievement.Achievement;
+import io.github.unisim.achievement.AchievementManager;
 import io.github.unisim.building.Building;
 import io.github.unisim.building.BuildingManager;
 import io.github.unisim.building.BuildingType;
@@ -49,6 +51,7 @@ public class World {
   private Matrix4 invIsoTransform;
   private BuildingManager buildingManager;
   private EventManager eventManager;
+  private AchievementManager achievementManager;
   private boolean canBuild;
   private Point mousePosInWorld;
   private Point btmLeft;
@@ -56,6 +59,7 @@ public class World {
   public Building selectedBuilding;
   public boolean selectedBuildingUpdated;
   public Event currentEvent;
+  public Achievement currentAchievement;
   private Score score;
 
   /**
@@ -67,6 +71,7 @@ public class World {
     initIsometricTransform();
     buildingManager = new BuildingManager(isoTransform, this);
     eventManager = new EventManager(this);
+    achievementManager = new AchievementManager(this);
 
     selectedBuilding = null;
   }
@@ -142,6 +147,17 @@ public class World {
     }
     if (!GameState.paused && !GameState.gameOver) {
         score.incrementScore(eventManager.eventTick());
+    }
+
+    // Render the achievements bar
+    if (achievementManager.displaying()) {
+        currentAchievement = achievementManager.getCurrentAchievement();
+    }
+    else {
+        currentAchievement = null;
+    }
+    if (!GameState.paused && !GameState.gameOver) {
+        score.incrementScore(achievementManager.achievementDisplayTick());
     }
 
     // render buildings after all map related rendering
@@ -389,7 +405,10 @@ public class World {
     initIsometricTransform();
     buildingManager = new BuildingManager(isoTransform, this);
     selectedBuilding = null;
-    eventManager.reset();
+    eventManager = new EventManager(this);
+    currentEvent = null;
+    achievementManager = new AchievementManager(this);
+    currentAchievement = null;
   }
 
   public Event getCurrentEvent() {

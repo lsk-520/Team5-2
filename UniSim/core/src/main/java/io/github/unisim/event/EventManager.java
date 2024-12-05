@@ -30,8 +30,7 @@ public class EventManager {
      */
     public EventManager(World world) {
         currentEvent = 0;
-        //eventQueueTimer = new Timer(30_000f);
-        eventQueueTimer = new Timer(5_000f);
+        eventQueueTimer = new Timer(30_000f);
         this.world = world;
 
         events.add(new Event("F. Flu",
