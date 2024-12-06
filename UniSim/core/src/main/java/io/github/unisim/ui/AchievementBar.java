@@ -1,16 +1,21 @@
 package io.github.unisim.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import io.github.unisim.GameState;
 import io.github.unisim.achievement.Achievement;
+import io.github.unisim.achievement.BuildingPlacementRequirement;
+import io.github.unisim.achievement.WelcomeRequirement;
+import io.github.unisim.building.BuildingType;
 import io.github.unisim.world.World;
 
 public class AchievementBar {
     ShapeActor bar;
-    private Table achievementsTable;
-    private Skin skin = new Skin();
+    private Table achievementsTable = new Table();
+    private Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
     private World world;
     // can be null
@@ -26,8 +31,15 @@ public class AchievementBar {
     public AchievementBar(Stage stage, World world) {
         this.world = world;
 
+        currentAchievement = new Achievement("Start",
+            "game",
+            new Image(new Texture(Gdx.files.internal("buildings/accommodation.png"))),
+            0,
+            new WelcomeRequirement());
+
         achievementNameLabel = new Label(currentAchievement.name, skin);
         achievementDescriptionLabel = new Label(currentAchievement.description, skin);
+        achievementNameLabel.setWrap(true);
         achievementDescriptionLabel.setWrap(true);
 
         achievementsTable.center().center();
@@ -44,7 +56,13 @@ public class AchievementBar {
     }
 
     public void update() {
-        //implement world.getCurrentAchievement()
+        currentAchievement = world.getCurrentAchievement();
+        if (currentAchievement != null) {
+            setVisible(true);
+        }
+        else {
+            setVisible(false);
+        }
         // and world.getNextAchievement()
         // then call and change visability + currentAchievement
 
@@ -70,7 +88,7 @@ public class AchievementBar {
         achievementNameLabel.setFontScale(height * 0.002f);
         achievementDescriptionLabel.setFontScale(height * 0.0015f);
 
-        achievementIconCell.width(barWidth * 0.2f).height(barHeight * 0.1f);
+        achievementIconCell.width(barWidth * 0.2f).height(height * 0.1f);
         achievementNameCell.width(barWidth * 0.4f / 2f).height(height * 0.10f);
         achievementDescriptionCell.width(barWidth * 1.2f / 2f).height(height * 0.10f);
     }

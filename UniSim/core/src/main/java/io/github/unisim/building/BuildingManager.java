@@ -172,7 +172,7 @@ public class BuildingManager {
       if (building == previewBuilding) {
           return;
       }
-      Event currentEvent = world.currentEvent;
+      Event currentEvent = world.getCurrentEvent();
       if (currentEvent != null &&
           currentEvent.getBuildingType() == building.type) {
           world.updateScore(currentEvent.getAdjustment());

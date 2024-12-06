@@ -23,6 +23,7 @@ public class GameScreen implements Screen {
   private InfoBar infoBar;
   private BuildingMenu buildingMenu;
   private EventBar eventBar;
+  private AchievementBar achievementBar;
   private Timer timer;
   private Score score;
   private InputProcessor uiInputProcessor = new UiInputProcessor(stage);
@@ -41,6 +42,7 @@ public class GameScreen implements Screen {
     infoBar = new InfoBar(stage, timer, score, world);
     buildingMenu = new BuildingMenu(stage, world);
     eventBar = new EventBar(stage, world);
+    achievementBar = new AchievementBar(stage, world);
 
     inputMultiplexer.addProcessor(GameState.fullscreenInputProcessor);
     inputMultiplexer.addProcessor(stage);
@@ -66,11 +68,13 @@ public class GameScreen implements Screen {
     infoBar.update();
     buildingMenu.update();
     eventBar.update();
+    achievementBar.update();
     stage.draw();
     if (GameState.gameOver) {
       world.zoom((world.getMaxZoom() - world.getZoom()) * 2f);
       world.pan((90 - world.getCameraPos().x) / 10, -world.getCameraPos().y / 10);
       eventBar.setVisible(false);
+      achievementBar.setVisible(false);
       gameOverMenu.render(delta);
     }
   }
@@ -82,6 +86,7 @@ public class GameScreen implements Screen {
     infoBar.resize(width, height);
     buildingMenu.resize(width, height);
     eventBar.resize(width, height);
+    achievementBar.resize(width, height);
     gameOverMenu.resize(width, height);
   }
 
@@ -99,10 +104,10 @@ public class GameScreen implements Screen {
       timer.reset();
       score.reset();
       world.reset();
-      eventBar.reset();
       infoBar.reset();
       buildingMenu.reset();
       eventBar.reset();
+      achievementBar.reset();
     }
   }
 

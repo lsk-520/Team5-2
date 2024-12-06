@@ -58,8 +58,8 @@ public class World {
   private Point topRight;
   public Building selectedBuilding;
   public boolean selectedBuildingUpdated;
-  public Event currentEvent;
-  public Achievement currentAchievement;
+  private Event currentEvent;
+  private Achievement currentAchievement;
   private Score score;
 
   /**
@@ -387,6 +387,10 @@ public class World {
     return buildingManager.getBuildingCount(type);
   }
 
+  public float getScore() {
+      return score.getScore();
+  }
+
   public void updateScore(float scoreChange) {
       score.incrementScore(scoreChange);
   }
@@ -413,5 +417,9 @@ public class World {
 
   public Event getCurrentEvent() {
       return currentEvent;
+  }
+
+  public Achievement getCurrentAchievement() {
+      return currentAchievement;
   }
 }
