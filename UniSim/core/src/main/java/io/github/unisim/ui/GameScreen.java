@@ -23,6 +23,7 @@ public class GameScreen implements Screen {
   private InfoBar infoBar;
   private BuildingMenu buildingMenu;
   private EventBar eventBar;
+  private Leaderboard leaderboard;
   private AchievementBar achievementBar;
   private Timer timer;
   private Score score;
@@ -35,13 +36,14 @@ public class GameScreen implements Screen {
    * Constructor for the GameScreen.
    */
   public GameScreen() {
-    timer = new Timer(300_000);
+    timer = new Timer(3_000);
     score = new Score(100);
     world = new World(score);
     worldInputProcessor = new WorldInputProcessor(world);
     infoBar = new InfoBar(stage, timer, score, world);
     buildingMenu = new BuildingMenu(stage, world);
     eventBar = new EventBar(stage, world);
+    leaderboard = new Leaderboard(stage, world);
     achievementBar = new AchievementBar(stage, world);
 
     inputMultiplexer.addProcessor(GameState.fullscreenInputProcessor);
@@ -75,6 +77,7 @@ public class GameScreen implements Screen {
       world.pan((90 - world.getCameraPos().x) / 10, -world.getCameraPos().y / 10);
       eventBar.setVisible(false);
       achievementBar.setVisible(false);
+      leaderboard.show(stage);
       gameOverMenu.render(delta);
     }
   }
@@ -86,6 +89,7 @@ public class GameScreen implements Screen {
     infoBar.resize(width, height);
     buildingMenu.resize(width, height);
     eventBar.resize(width, height);
+    leaderboard.resize(width, height);
     achievementBar.resize(width, height);
     gameOverMenu.resize(width, height);
   }
