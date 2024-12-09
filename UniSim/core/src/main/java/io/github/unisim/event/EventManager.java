@@ -24,7 +24,6 @@ public class EventManager {
     private Timer eventQueueTimer;
     private Random rand = new Random();
 
-
     /**
      * @param world The world of the game.
      */
@@ -57,10 +56,9 @@ public class EventManager {
         return events.get(currentEvent);
     }
 
-    public void addEvent(Event event) {
-        events.add(event);
-    }
-
+    /**
+     * Changes currentEvent to a new event. The new event will be one that hasn't happened before.
+     */
     public void nextEvent() {
         int nextEvent = currentEvent;
         while (pastEvents.contains(events.get(nextEvent))) {
@@ -70,14 +68,16 @@ public class EventManager {
         currentEvent = nextEvent;
     }
 
-    /**Handles the event timer, and the wait timer.
+    /**
+     * Handles the event timer, and the wait timer.
      *
-     * @return The amount the score should change by.
+     * @return The amount the score should change by each tick.
      */
     public float eventTick() {
         if (hasEvent) {
+            // If an event is currently in play.
             Event event = getCurrentEvent();
-            float score = event.tick(); // The amount to adjust score by
+            float score = event.tick();
             hasEvent = !event.finished;
             if (!hasEvent) { eventQueueTimer.reset(); }
             if (!event.isTickEvent()) {

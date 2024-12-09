@@ -8,26 +8,28 @@ import io.github.unisim.building.BuildingType;
 import io.github.unisim.world.World;
 import java.util.ArrayList;
 
+/**
+ * Manages the achievements accessible to the player, and the common methods.
+ */
 public class AchievementManager {
-    // achievements possible to achieve
     private ArrayList<Achievement> achievements = new ArrayList<>();
-    // undisplayed achieved achievements
-    //private ArrayList<Achievement> undisplayedAchievements;
-    // current displayed achievement
     private Achievement currentAchievement;
-    // displayed achievements
-    //private ArrayList<Achievement> achievedAchievements;
 
+    // The queue of achievements waiting to be displayed.
     private ArrayList<Achievement> displayQueue = new ArrayList<>();
-
 
     private World world;
     private Timer displayTimer;
 
+    /**
+     * Adds the achievements to the list possible to achieve by the player. Sets the display timer for the initial
+     * welcome message to the player.
+     */
     public AchievementManager(World world) {
         displayTimer = new Timer(10_000);
         this.world = world;
 
+        // The initial message to display to the user when the game starts.
         achievements.add(new Achievement("Welcome!",
             "Increase score to win the game!",
             new Image(new Texture(Gdx.files.internal("buildings/accommodation.png"))),
@@ -50,8 +52,17 @@ public class AchievementManager {
             new Image(new Texture(Gdx.files.internal("buildings/library.png"))),
             10,
             new BuildingPlacementRequirement(new BuildingType[]{BuildingType.LEARNING}, 5)));
+        achievements.add(new Achievement("Slacker",
+            "You've placed 0 buildings! Is this even a university?",
+            new Image(new Texture(Gdx.files.internal("achievements/trophy.png"))),
+            1,
+            new BuildingPlacementRequirement(BuildingType.values(), 0, 500)));
+        achievements.add(new Achievement("Minimalist",
+            "You've only placed 5 buildings!",
+            new Image(new Texture(Gdx.files.internal("achievements/trophy.png"))),
+            10,
+            new BuildingPlacementRequirement(BuildingType.values(), 5, 500)));
 
-        // add achievements in
     }
 
     public Achievement getCurrentAchievement() {
@@ -65,6 +76,11 @@ public class AchievementManager {
         return false;
     }
 
+    /**
+     * Displays the next achievement in the queue.
+     *
+     * @param next If the current achievement's time to display is up.
+     */
     public void displayAchievement(boolean next) {
         if (displayQueue.isEmpty()) {
             currentAchievement = null;
@@ -82,9 +98,15 @@ public class AchievementManager {
 
     }
 
+    /**
+     * Checks if any achievement has been achieved. Manages currently displayed achievements, and the queue for
+     * displaying them.
+     *
+     * @return The amount to change the score by if a new achievement is achieved and displayed.
+     */
     public float achievementDisplayTick() {
-        // if theres an achievement being displayed, tick though display time
-        // check if display time is finished, and if so, call nextevent
+        // If an achievement is currently being displayed, check the display timer isn't up, and return the amount
+        // to change the score.
         if (currentAchievement != null) {
             float scoreChange = currentAchievement.getScoreChange();
             if (!displayTimer.tick(Gdx.graphics.getDeltaTime() * 1000f)) {
@@ -98,6 +120,9 @@ public class AchievementManager {
         return 0;
     }
 
+    /**
+     * Iterates over each achievement and checks if the status of achievement has changed.
+     */
     private void checkChangedAchievements() {
         for (Achievement achievement : achievements) {
             if (achievement.checkAchieved(world)) {

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.unisim.GameState;
 import io.github.unisim.Point;
+import io.github.unisim.Timer;
 import io.github.unisim.achievement.Achievement;
 import io.github.unisim.achievement.AchievementManager;
 import io.github.unisim.building.Building;
@@ -62,13 +63,15 @@ public class World {
   private Event currentEvent;
   private Achievement currentAchievement;
   private Score score;
+  private Timer timer;
   private Sound placeSound = Gdx.audio.newSound(Gdx.files.internal("assets/sound/place.mp3"));
 
   /**
    * Create a new World.
    */
-  public World(Score score) {
+  public World(Score score, Timer timer) {
     this.score = score;
+    this.timer = timer;
     camera.zoom = 0.05f;
     initIsometricTransform();
     buildingManager = new BuildingManager(isoTransform, this);
@@ -396,6 +399,10 @@ public class World {
 
   public void updateScore(float scoreChange) {
       score.incrementScore(scoreChange);
+  }
+
+  public float getRemainingTime() {
+      return timer.getTimeAsFloat();
   }
 
   /**

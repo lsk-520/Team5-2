@@ -106,13 +106,6 @@ public class BuildingManager {
     }
   }
 
-//  public boolean buildingTypeExists(BuildingType buildingType) {
-//      if (buildingCounts.containsKey(buildingType) && buildingCounts.get(buildingType) > 0) {
-//          return true;
-//      }
-//      return false;
-//  }
-
   /**
    * Handle placement of a building into the world by determining
    * the correct draw order and updating the building counters.
@@ -259,6 +252,7 @@ public class BuildingManager {
 
     /**
      * Calculates the distance between the edges of two buildings.
+     *
      * @param b1 - The first building
      * @param b2 - The second building
      * @return The distance between the edges of b1, b2.

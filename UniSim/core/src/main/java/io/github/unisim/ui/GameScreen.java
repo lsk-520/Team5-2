@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
   public GameScreen() {
     timer = new Timer(300_000);
     score = new Score(100);
-    world = new World(score);
+    world = new World(score, timer);
     worldInputProcessor = new WorldInputProcessor(world);
     infoBar = new InfoBar(stage, timer, score, world);
     buildingMenu = new BuildingMenu(stage, world);

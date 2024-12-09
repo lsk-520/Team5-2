@@ -76,11 +76,12 @@ public class Event {
         this.scoreFactor = scoreFactor;
         this.tickPeriod = tickPeriod;
         this.isTickEvent = true;
+        buildingType = null;
     }
 
     /**The timer of the event.
      * <p>Handles the ui of the timer of the event, and the score changing each tick.</p>
-     * @return The amount the score should change by.*/
+     * @return The amount the score should change by each tick.*/
     public float tick() {
         boolean changeScore = false;
         float scoreChange = scoreFactor;
@@ -95,7 +96,6 @@ public class Event {
         else {
             // Initial score adjustment at the start of the event.
             if (scoreFactor != 0) { changeScore = true; }
-            //else { scoreFactor = buildingTypeScoreIncrease; }
             scoreFactor = 0;
         }
         if (finished) {
@@ -110,16 +110,11 @@ public class Event {
     }
 
     public BuildingType getBuildingType() {
-        if (!isTickEvent) {
-            return buildingType;
-        }
-        else {
-            return null;
-        }
+        return buildingType;
     }
 
-    public float getScoreFactor() {
-        return scoreFactor;
+    public boolean isTickEvent() {
+        return isTickEvent;
     }
 
     /**
@@ -137,10 +132,6 @@ public class Event {
         }
         scoreIncreased += scoreGain;
         return scoreGain;
-    }
-
-    public boolean isTickEvent() {
-        return isTickEvent;
     }
 
     public void reset() {
