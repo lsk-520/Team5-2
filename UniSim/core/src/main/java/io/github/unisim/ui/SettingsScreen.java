@@ -5,11 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.unisim.GameState;
@@ -24,7 +20,10 @@ public class SettingsScreen implements Screen {
   private Slider volumeSlider;
   private Label volumeLabel;
   private TextButton backButton;
+  private TextButton changeUsernameButton;
   private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
+  final String[] newUsername = {""};
 
   /**
    * Create a new Settings screen and draw the initial UI layout.
@@ -48,6 +47,36 @@ public class SettingsScreen implements Screen {
       return false;
     });
 
+    // Username input button
+    changeUsernameButton = new TextButton("Change Username", skin);
+    changeUsernameButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+        Dialog dialog = new Dialog("", skin) {
+          @Override
+          protected void result(Object object) {
+            if ((Boolean) object) {
+              // Set new username if the user enters something
+              TextField textField = findActor("usernameField");
+              String username = textField.getText();
+              if (!username.isEmpty()) {
+                newUsername[0] = username;
+              }
+            }
+          }
+        };
+
+        // Set up the textField and add buttons
+        TextField textField = new TextField("", skin);
+        textField.setName("usernameField");
+        dialog.getContentTable().add(textField).width(200).pad(10);
+        dialog.button("OK", true);
+        dialog.button("Cancel", false);
+        dialog.show(stage);
+        stage.setKeyboardFocus(textField);
+      }
+    });
+
     // Back button
     backButton = new TextButton("Back", skin);
     backButton.setPosition(150, 80);
@@ -68,7 +97,9 @@ public class SettingsScreen implements Screen {
     table.row();
     table.add(volumeLabel).center();
     table.row();
-    table.add(volumeSlider).center().width(250).height(67);
+    table.add(volumeSlider).center().width(250).height(67).padBottom(10);
+    table.row();
+    table.add(changeUsernameButton).center().width(250).height(67);
     stage.addActor(table);
 
     inputMultiplexer.addProcessor(GameState.fullscreenInputProcessor);
@@ -82,6 +113,12 @@ public class SettingsScreen implements Screen {
   public void render(float delta) {
     // Clear the screen
     ScreenUtils.clear(GameState.UISecondaryColour);
+
+    // Resetting settings based on any changes
+    if (!(newUsername[0] == "")) {
+      GameState.settings.setUsername(newUsername[0]);
+    }
+    GameState.settings.setVolume(volumeSlider.getValue());
 
     // Draw the stage containing the volume slider and buttons
     stage.act(delta);

@@ -1,15 +1,16 @@
 package io.github.unisim.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.unisim.GameState;
+import org.w3c.dom.Text;
+
+import java.util.Random;
 
 /**
  * The start menu screen which presents the player with the option to start the
@@ -20,9 +21,12 @@ public class StartMenuScreen implements Screen {
   private Stage stage;
   private Table table;
   private Skin skin;
+  private Label welcomeLabel;
   private TextButton playButton;
   private TextButton settingsButton;
   private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
+  private Random random = new Random();
 
   /**
    * Create a new StartMenuScreen and draw the initial UI layout.
@@ -32,11 +36,21 @@ public class StartMenuScreen implements Screen {
     table = new Table();
     skin = GameState.defaultSkin;
 
+    // Set new random username
+    String randomUsername = random.ints(97,123)
+      .limit(5)
+      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+      .toString();
+    GameState.settings.setUsername(randomUsername);
+
+    // Welcome message
+    welcomeLabel = new Label("Welcome " + GameState.settings.getUsername() + "!", skin);
+
     // Play button
     playButton = new TextButton("Play", skin);
     playButton.addListener(new ClickListener() {
       @Override
-      public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+      public void clicked(InputEvent event, float x, float y) {
         // Switch to the game screen
         GameState.currentScreen = GameState.gameScreen;
       }
@@ -46,7 +60,7 @@ public class StartMenuScreen implements Screen {
     settingsButton = new TextButton("Settings", skin);
     settingsButton.addListener(new ClickListener() {
       @Override
-      public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+      public void clicked(InputEvent event, float x, float y) {
         // Switch to the settings screen
         GameState.currentScreen = GameState.settingScreen;
       }
@@ -56,9 +70,11 @@ public class StartMenuScreen implements Screen {
     table.setFillParent(true);
     table.center().center();
     table.pad(100, 100, 100, 100);
-    table.add(playButton).center().width(250).height(100).padBottom(10);
+    table.add(welcomeLabel).expandX().align(Align.center).padBottom(20);
     table.row();
-    table.add(settingsButton).center().width(250).height(67);
+    table.add(playButton).center().width(250).height(80).padBottom(8);
+    table.row();
+    table.add(settingsButton).center().width(250).height(50);
     stage.addActor(table);
 
     inputMultiplexer.addProcessor(GameState.fullscreenInputProcessor);
@@ -73,6 +89,9 @@ public class StartMenuScreen implements Screen {
   public void render(float delta) {
     // Clear the screen
     ScreenUtils.clear(GameState.UISecondaryColour);
+
+    // Set welcome label
+    welcomeLabel.setText("Welcome " + GameState.settings.getUsername() + "!");
 
     // Draw the stage containing buttons
     stage.act(delta);

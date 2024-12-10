@@ -65,16 +65,6 @@ public class BuildingMenu {
         BuildingType.LEARNING,
         "Library"
     ));
-//    buildings.add(new Building(
-//        new Texture(Gdx.files.internal("buildings/basketballCourt.png")),
-//        0.0025f,
-//        new Vector2(1f, -2.4f),
-//        new Point(),
-//        new Point(6, 9),
-//        false,
-//        BuildingType.RECREATION,
-//        "Basketball Court"
-//    ));
     buildings.add(new Building(
         new Texture(Gdx.files.internal("buildings/stadium.png")),
             0.0020f,

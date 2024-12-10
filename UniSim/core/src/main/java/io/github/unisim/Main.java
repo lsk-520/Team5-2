@@ -27,8 +27,8 @@ public class Main extends Game {
             currentScreen = GameState.currentScreen;
             setScreen(currentScreen);
             currentScreen.resume();
-            music.setVolume(GameState.settings.getVolume()*0.75f);
         }
+      music.setVolume(GameState.settings.getVolume()*0.75f);
         super.render(); // Ensures the active screen is rendered
     }
 

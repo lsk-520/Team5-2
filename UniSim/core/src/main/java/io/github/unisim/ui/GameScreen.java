@@ -36,8 +36,8 @@ public class GameScreen implements Screen {
    * Constructor for the GameScreen.
    */
   public GameScreen() {
-    timer = new Timer(3_000);
-    score = new Score(100);
+    timer = new Timer(300_000);
+    score = new Score(50);
     world = new World(score, timer);
     worldInputProcessor = new WorldInputProcessor(world);
     infoBar = new InfoBar(stage, timer, score, world);
@@ -112,6 +112,7 @@ public class GameScreen implements Screen {
       buildingMenu.reset();
       eventBar.reset();
       achievementBar.reset();
+      leaderboard = new Leaderboard(stage, world);
     }
   }
 
