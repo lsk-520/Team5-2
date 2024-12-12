@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 public class ScoreTests {
     Score score = new Score(10);
 
@@ -36,8 +37,11 @@ public class ScoreTests {
     }
 
     @Test
-    public void calculateScoreTest(){
-        // to be implemented once calculateScore is implemented fully
+    public void initialScoreValueTest(){
+        Score score = new Score(500);
+        assertEquals(score.getScore(), 100);
+        Score score2 = new Score(-100);
+        assertEquals(score2.getScore(), 0);
     }
 
 }
