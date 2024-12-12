@@ -126,7 +126,7 @@ public class Event {
      */
     public float getAdjustment() {
         float time = timer.getTimeAsFloat() / initialTime;
-        float scoreGain = buildingTypeScoreIncrease * time * 0.8f;
+        float scoreGain = buildingTypeScoreIncrease * time * 0.7f;
         if (scoreIncreased + scoreGain >= buildingTypeScoreIncrease) {
             scoreGain = buildingTypeScoreIncrease - scoreIncreased;
         }

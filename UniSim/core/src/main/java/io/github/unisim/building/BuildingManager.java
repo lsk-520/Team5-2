@@ -1,7 +1,6 @@
 package io.github.unisim.building;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -12,7 +11,6 @@ import io.github.unisim.GameState;
 import io.github.unisim.Point;
 import io.github.unisim.event.Event;
 import io.github.unisim.world.World;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,10 +26,17 @@ public class BuildingManager {
   private Matrix4 isoTransform;
   private Building previewBuilding;
   private World world;
+  private float timePassed = 0f;
+
+  //private float[][] buildingTypeMatrix;
+  private Map<BuildingType, BuildingType[]> buildingTypesProximity = new HashMap<>();
+
+  private ArrayList<ArrayList<Float>> buildingsDistance = new ArrayList<>();
 
   public BuildingManager(Matrix4 isoTransform, World world) {
     this.isoTransform = isoTransform;
     this.world = world;
+    buildingTypeMatrix();
   }
 
   /**
@@ -104,7 +109,11 @@ public class BuildingManager {
     for (Building building : buildings) {
       drawBuilding(building, batch);
     }
+    if (!GameState.paused) {
+      updateScorePerSecond();
+    }
   }
+
 
   /**
    * Handle placement of a building into the world by determining
@@ -153,7 +162,8 @@ public class BuildingManager {
     }
     buildings.add(i, building);
     updateCounters(building);
-    updateScore(building);
+    updateScoreEvent(building);
+    updateDistances(building);
     return i;
   }
 
@@ -161,9 +171,9 @@ public class BuildingManager {
      * Updates the score if a building has been placed on the map, that is needed
      * for the current event.
      *
-     * @param building - A reference to the building object that was placed
+     * @param building - A reference to the building object that was placed.
      */
-  private void updateScore(Building building) {
+  private void updateScoreEvent(Building building) {
       if (building == previewBuilding) {
           return;
       }
@@ -184,6 +194,7 @@ public class BuildingManager {
     if (building == previewBuilding) {
       return;
     }
+
     if (!buildingCounts.containsKey(building.type)) {
       buildingCounts.put(building.type, 1);
       return;
@@ -250,18 +261,166 @@ public class BuildingManager {
     );
   }
 
-    /**
-     * Calculates the distance between the edges of two buildings.
-     *
-     * @param b1 - The first building
-     * @param b2 - The second building
-     * @return The distance between the edges of b1, b2.
-     */
+  /**
+   * Gives updates to score every second. Called in a render method.
+   */
+  public void updateScorePerSecond() {
+    timePassed += Gdx.graphics.getDeltaTime();
+    if (timePassed >= 1.0f) {
+      timePassed -= 1.0f;
+
+      // Change score proportionally to the ratio of buildings to each other
+      float adj1 = 0.8f; // When variance below this, the score increases (approx +adj1 per second with perfect variance)
+      float adj2 = 5f; // Scales the change.
+      float scoreChange = -(variance() - adj1) / adj2;
+      world.updateScore(scoreChange);
+
+      // Change score depending on the average density.
+      world.updateScore(density());
+    }
+  }
+
+  /**
+   * Calculates the variance of the number of the buildings.
+   */
+  private float variance() {
+    // Calculates the mean.
+    float mean = 0f;
+    for (int i = 0; i < BuildingType.values().length; i++) {
+      mean += world.getBuildingCount(BuildingType.values()[i]);
+    }
+    mean = mean / BuildingType.values().length;
+
+    // Calculates the variance.
+    float variance = 0f;
+    for (int i = 0; i < BuildingType.values().length; i++) {
+      variance += (float)Math.pow(world.getBuildingCount(BuildingType.values()[i]) - mean, 2);
+    }
+    variance = variance / BuildingType.values().length;
+
+    return variance;
+  }
+
+  private float density() {
+    //float pairingBonus = 10f;
+    float radius = 30f; // Radius to check buildings in.
+    //boolean applyBonus = false;
+
+    // Get the maximum average density
+    float averageSize = ((4f*4f) + (20f*12f) + (8f*12f) + (12f*11f) + (4f*5f)) / 5f; // Size of buildings in BuildingMenu
+    float averageCount = (radius*radius) / averageSize;
+
+    float overallValue = 0f;
+
+    ArrayList<Building> cleanBuildings = getCleanBuildings();
+    if (cleanBuildings.isEmpty()) {
+      return 0f;
+    }
+    for (int i = 0; i < cleanBuildings.size(); i++) { // for each building
+      //Building building = cleanBuildings.get(i);
+
+      // MAIN LOOP
+
+      // Gets neighbours, which contains the distances of buildings within the radius of building, that
+      // are not building itself.
+      ArrayList<Float> neighbours = new ArrayList<>();
+      for (int j = 0; j < buildingsDistance.get(i).size(); j++) {
+        if (buildingsDistance.get(i).get(j) < radius && !buildingsDistance.get(i).get(j).equals(0f)) {
+          neighbours.add(buildingsDistance.get(i).get(j));
+        }
+      }
+
+      float density = neighbours.size() / averageCount;
+
+      overallValue += density;
+    }
+    overallValue = overallValue / cleanBuildings.size();
+
+    if (overallValue < 0.3) {
+      return -(1f-overallValue);
+    }
+    else {
+      return  0.5f;
+    }
+  }
+
+  /**
+   * Calculates distances of all buildings to each other, producing a distance matrix {@code buildingsDistance}.
+   *
+   * @param building The building to add distances of into {@code buildingsDistance}.
+   */
+  private void updateDistances(Building building) {
+    if (building == previewBuilding) {
+      return;
+    }
+    // Remove previewBuilding from the list of buildings.
+    ArrayList<Building> cleanBuildings= getCleanBuildings();
+    // Calculates distance and adds into distance matrix.
+    buildingsDistance.add(cleanBuildings.indexOf(building), new ArrayList<>());
+    for (int i = 0; i < cleanBuildings.size(); i++) {
+      float distance = distance(cleanBuildings.get(i), building);
+      // Ensures the (i,cleanBuildings.indexOf(building)) not added twice.
+      if (i != cleanBuildings.indexOf(building)) {
+        buildingsDistance.get(i).add(cleanBuildings.indexOf(building), distance);
+      }
+      buildingsDistance.get(cleanBuildings.indexOf(building)).add(i, distance);
+    }
+
+    // REMOVE (FOR TESTING)
+    for (int i = 0; i < buildingsDistance.size(); i++) {
+      String print = "";
+      for (int j = 0; j < buildingsDistance.get(i).size(); j++) {
+        print += buildingsDistance.get(i).get(j) + " ";
+      }
+      Gdx.app.log("matrix", print);
+    }
+    Gdx.app.log("matrix"," ");
+  }
+
+  /**
+   * Creates and returns a new ArrayList of {@code buildings} without the {@code previewBuilding}.
+   *
+   * @return {@code buildings} without {@code previewBuilding}
+   */
+  private ArrayList<Building> getCleanBuildings() {
+    ArrayList<Building> cleanBuildings= new ArrayList<>();
+    for (int i = 0; i < buildings.size(); i++) {
+      if (buildings.get(i) != previewBuilding) {
+        cleanBuildings.add(buildings.get(i));
+      }
+    }
+    return cleanBuildings;
+  }
+
+  /**
+   * Calculates the distance between the centres of two buildings. A helper function for updateDistances.
+   *
+   * @param b1 - The first building
+   * @param b2 - The second building
+   * @return The distance between the centres of b1, b2.
+   */
   public static float distance(Building b1, Building b2) {
-      float xdistance = (Math.abs((b1.location.x + (b1.size.x / 2f)) - (b2.location.x + (b2.size.x / 2f)))
-                         - ((b1.size.x / 2f) + (b2.size.x / 2f)));
-      float ydistance = (Math.abs((b1.location.y + (b1.size.y / 2f)) - (b2.location.y + (b2.size.y / 2f)))
-                         - ((b1.size.y / 2f) + (b2.size.y / 2f)));
-      return ((float) Math.sqrt(Math.pow(xdistance, 2) + Math.pow(ydistance, 2)));
+    float xdistance = (Math.abs((b1.location.x + (b1.size.x / 2f)) - (b2.location.x + (b2.size.x / 2f))));
+    float ydistance = (Math.abs((b1.location.y + (b1.size.y / 2f)) - (b2.location.y + (b2.size.y / 2f))));
+    return ((float) Math.sqrt(Math.pow(xdistance, 2) + Math.pow(ydistance, 2)));
+  }
+
+  private void buildingTypeMatrix() {
+//    buildingTypeMatrix = new float[BuildingType.values().length][BuildingType.values().length];
+//    buildingTypeMatrix[0] = new float[]{0, 0, 0, 0, 1}; // recreation near food
+//    buildingTypeMatrix[1] = new float[]{0, 0, 1, 0, 0}; // learning near accommodation
+//    buildingTypeMatrix[2] = new float[]{0, 1, 0, 0, 1}; // accommodation near learning + food
+//    buildingTypeMatrix[3] = new float[]{0, 0, 0, 0, 0}; //
+//    buildingTypeMatrix[4] = new float[]{1, 0, 1, 0, 0}; // food near recreation + accommodation
+    // (recreation, food)
+    // (learning, accommodation)
+    // (accommodation, food)
+
+    buildingTypesProximity.put(BuildingType.RECREATION, new BuildingType[]{BuildingType.RECREATION,BuildingType.FOOD});
+    buildingTypesProximity.put(BuildingType.LEARNING, new BuildingType[]{BuildingType.LEARNING, BuildingType.ACCOMMODATION});
+    buildingTypesProximity.put(BuildingType.ACCOMMODATION, new BuildingType[]{BuildingType.ACCOMMODATION, BuildingType.FOOD});
+    buildingTypesProximity.put(BuildingType.HEALTH, new BuildingType[]{BuildingType.HEALTH});
+    buildingTypesProximity.put(BuildingType.FOOD, new BuildingType[]{BuildingType.FOOD});
+
   }
 }

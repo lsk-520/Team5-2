@@ -60,6 +60,10 @@ public class SettingsScreen implements Screen {
               TextField textField = findActor("usernameField");
               String username = textField.getText();
               if (!username.isEmpty()) {
+                // Input validation3
+                if (username.contains(" ")) {
+                  username = username.replaceAll(" ", "");
+                }
                 newUsername[0] = username;
               }
             }
@@ -93,13 +97,13 @@ public class SettingsScreen implements Screen {
     table.setFillParent(true);
     table.center().center();
     table.pad(100, 100, 100, 100);
-    table.add(backButton).center().width(250).height(67).padBottom(10);
-    table.row();
     table.add(volumeLabel).center();
     table.row();
     table.add(volumeSlider).center().width(250).height(67).padBottom(10);
     table.row();
-    table.add(changeUsernameButton).center().width(250).height(67);
+    table.add(changeUsernameButton).center().width(250).height(67).padBottom(10);
+    table.row();
+    table.add(backButton).center().width(250).height(67);
     stage.addActor(table);
 
     inputMultiplexer.addProcessor(GameState.fullscreenInputProcessor);

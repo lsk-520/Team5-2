@@ -60,12 +60,12 @@ public class EventManager {
      * Changes currentEvent to a new event. The new event will be one that hasn't happened before.
      */
     public void nextEvent() {
-        int nextEvent = currentEvent;
-        while (pastEvents.contains(events.get(nextEvent))) {
-            nextEvent = rand.nextInt(events.size());
-        }
-        pastEvents.add(events.get(currentEvent));
-        currentEvent = nextEvent;
+      int nextEvent = currentEvent;
+      while (pastEvents.contains(events.get(nextEvent))) {
+        nextEvent = rand.nextInt(events.size());
+      }
+      pastEvents.add(events.get(currentEvent));
+      currentEvent = nextEvent;
     }
 
     /**

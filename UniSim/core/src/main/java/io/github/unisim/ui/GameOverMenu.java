@@ -13,7 +13,7 @@ import io.github.unisim.GameState;
 
 /**
  * Menu that is displayed when the timer has run out. This is where the final score
- * will be calculated in future.
+ * will be calculated in the future.
  */
 public class GameOverMenu {
   private Stage stage;
@@ -23,6 +23,7 @@ public class GameOverMenu {
   private TextButton mainMenuButton;
   private Cell<TextButton> buttonCell;
   private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+  private Leaderboard leaderboard;
 
   /**
    * Creates a new GameOverMenu and initialises all events and UI elements used in the menu.
@@ -51,14 +52,13 @@ public class GameOverMenu {
     inputMultiplexer.addProcessor(stage);
   }
 
-
   public void render(float delta) {
     stage.act(delta);
     stage.draw();
   }
 
   /**
-   * Called when the game window is resized and we need to adjust the scale of the UI elements.
+   * Called when the game window is resized, and we need to adjust the scale of the UI elements.
 
    * @param width - The new game window width in pixels
    * @param height - The new game window height in pixels

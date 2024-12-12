@@ -61,13 +61,13 @@ public class Leaderboard {
       }
       boardTable.row();
 
-      yourScoreLabel = new Label("Your Score: " + world.getScore(), skin);
+      yourScoreLabel = new Label("Your Score: " + (int)world.getScore(), skin);
       yourScoreLabelCell = boardTable.add(yourScoreLabel).align(Align.center).colspan(2);
     }
 
     private String[] getDetails(int i) {
       if (i >= leaderboard.size()) {
-        return new String[]{"AAA", "0%"};
+        return new String[]{"AAA", "0"};
       }
       else {
         return leaderboard.get(i);
@@ -103,6 +103,9 @@ public class Leaderboard {
             leaderboard.add(namePoints);
           }
         }
+        if (!added) {
+          leaderboard.add(new String[]{username, String.valueOf((int)(world.getScore()))});
+        }
       }
       // Write back to file.
       String lbWrite = "";
@@ -134,14 +137,17 @@ public class Leaderboard {
       }
     }
 
-    public void show(Stage stage) {
+    public void show(Stage stage, float delta) {
       if (!shown) {
         updateLeaderboard();
         displayLeaderboard();
+        stage.addActor(bar);
+        stage.addActor(boardTable);
       }
-      stage.addActor(bar);
-      stage.addActor(boardTable);
       this.setVisible(true);
+
+      stage.act(delta);
+      stage.draw();
     }
 
     public void setVisible(boolean visible) {

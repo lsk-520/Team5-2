@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
    */
   public GameScreen() {
     timer = new Timer(300_000);
-    score = new Score(50);
+    score = new Score(30);
     world = new World(score, timer);
     worldInputProcessor = new WorldInputProcessor(world);
     infoBar = new InfoBar(stage, timer, score, world);
@@ -73,11 +73,12 @@ public class GameScreen implements Screen {
     achievementBar.update();
     stage.draw();
     if (GameState.gameOver) {
+      leaderboard.show(stage, delta);
+      stage.draw();
       world.zoom((world.getMaxZoom() - world.getZoom()) * 2f);
       world.pan((90 - world.getCameraPos().x) / 10, -world.getCameraPos().y / 10);
       eventBar.setVisible(false);
       achievementBar.setVisible(false);
-      leaderboard.show(stage);
       gameOverMenu.render(delta);
     }
   }
@@ -112,6 +113,7 @@ public class GameScreen implements Screen {
       buildingMenu.reset();
       eventBar.reset();
       achievementBar.reset();
+      leaderboard.reset();
       leaderboard = new Leaderboard(stage, world);
     }
   }
