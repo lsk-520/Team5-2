@@ -114,7 +114,6 @@ public class BuildingManager {
     }
   }
 
-
   /**
    * Handle placement of a building into the world by determining
    * the correct draw order and updating the building counters.
@@ -276,7 +275,13 @@ public class BuildingManager {
       world.updateScore(scoreChange);
 
       // Change score depending on the average density.
-      world.updateScore(density());
+      float overallDensity = density();
+      if (overallDensity < 0.3) {
+        world.updateScore(-(1f-overallDensity));
+      }
+      else {
+        world.updateScore(0.5f);
+      }
     }
   }
 
@@ -301,26 +306,27 @@ public class BuildingManager {
     return variance;
   }
 
+  /**
+   * Calculates the average density around buildings across the map.
+   *
+   * @return The average density around buildings.
+   */
   private float density() {
-    //float pairingBonus = 10f;
     float radius = 30f; // Radius to check buildings in.
-    //boolean applyBonus = false;
+    float overallDensity = 0f;
+    ArrayList<Building> cleanBuildings = getCleanBuildings();
 
     // Get the maximum average density
     float averageSize = ((4f*4f) + (20f*12f) + (8f*12f) + (12f*11f) + (4f*5f)) / 5f; // Size of buildings in BuildingMenu
     float averageCount = (radius*radius) / averageSize;
 
-    float overallValue = 0f;
-
-    ArrayList<Building> cleanBuildings = getCleanBuildings();
+    // Removes division by 0 errors.
     if (cleanBuildings.isEmpty()) {
       return 0f;
     }
-    for (int i = 0; i < cleanBuildings.size(); i++) { // for each building
-      //Building building = cleanBuildings.get(i);
 
-      // MAIN LOOP
-
+    // Calculates density around each building.
+    for (int i = 0; i < cleanBuildings.size(); i++) {
       // Gets neighbours, which contains the distances of buildings within the radius of building, that
       // are not building itself.
       ArrayList<Float> neighbours = new ArrayList<>();
@@ -332,16 +338,11 @@ public class BuildingManager {
 
       float density = neighbours.size() / averageCount;
 
-      overallValue += density;
+      overallDensity += density;
     }
-    overallValue = overallValue / cleanBuildings.size();
-
-    if (overallValue < 0.3) {
-      return -(1f-overallValue);
-    }
-    else {
-      return  0.5f;
-    }
+    // Averages the density.
+    overallDensity = overallDensity / cleanBuildings.size();
+    return overallDensity;
   }
 
   /**
@@ -406,21 +407,10 @@ public class BuildingManager {
   }
 
   private void buildingTypeMatrix() {
-//    buildingTypeMatrix = new float[BuildingType.values().length][BuildingType.values().length];
-//    buildingTypeMatrix[0] = new float[]{0, 0, 0, 0, 1}; // recreation near food
-//    buildingTypeMatrix[1] = new float[]{0, 0, 1, 0, 0}; // learning near accommodation
-//    buildingTypeMatrix[2] = new float[]{0, 1, 0, 0, 1}; // accommodation near learning + food
-//    buildingTypeMatrix[3] = new float[]{0, 0, 0, 0, 0}; //
-//    buildingTypeMatrix[4] = new float[]{1, 0, 1, 0, 0}; // food near recreation + accommodation
-    // (recreation, food)
-    // (learning, accommodation)
-    // (accommodation, food)
-
     buildingTypesProximity.put(BuildingType.RECREATION, new BuildingType[]{BuildingType.RECREATION,BuildingType.FOOD});
     buildingTypesProximity.put(BuildingType.LEARNING, new BuildingType[]{BuildingType.LEARNING, BuildingType.ACCOMMODATION});
     buildingTypesProximity.put(BuildingType.ACCOMMODATION, new BuildingType[]{BuildingType.ACCOMMODATION, BuildingType.FOOD});
     buildingTypesProximity.put(BuildingType.HEALTH, new BuildingType[]{BuildingType.HEALTH});
     buildingTypesProximity.put(BuildingType.FOOD, new BuildingType[]{BuildingType.FOOD});
-
   }
 }

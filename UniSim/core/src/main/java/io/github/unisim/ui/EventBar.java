@@ -9,6 +9,9 @@ import io.github.unisim.GameState;
 import io.github.unisim.event.Event;
 import io.github.unisim.world.World;
 
+/**
+ * Create an events bar with events information.
+ */
 public class EventBar {
     private ShapeActor bar;
     private Table eventsTable = new Table();
@@ -25,7 +28,13 @@ public class EventBar {
     private Cell<Label> eventDescriptionLabelCell;
     private Cell<Image> eventIconCell;
 
-    public EventBar(Stage stage, World world) {
+  /**
+   * Create a new eventBar and add its components onto the stage.
+   *
+   * @param stage - The stage to draw the eventBar onto.
+   * @param world - The world to access the events from.
+   */
+  public EventBar(Stage stage, World world) {
 
         // CHANGE (JUST FOR TESTING)
         currentEvent = new Event("Plague",
@@ -56,6 +65,9 @@ public class EventBar {
         eventsTable.setVisible(false);
     }
 
+  /**
+   * Called when the UI needs to be updated, usually on every frame.
+   */
     public void update() {
         if (world.getCurrentEvent() != null && currentEvent == null){
             setVisible(true);
@@ -79,6 +91,12 @@ public class EventBar {
         }
     }
 
+  /**
+   * Update the bounds of the background & table actors to fit the new size of the screen.
+
+   * @param width - The new width of the screen in pixels.
+   * @param height - The enw height of the screen in pixels.
+   */
     public void resize(int width, int height) {
         float barWidth = height * 0.6f;
         float barHeight = (height * 0.10f);

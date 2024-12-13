@@ -50,6 +50,11 @@ public class EventManager {
             "Lecturers are on strike!\nPlace more learning buildings to regain student satisfaction.",
             new Image(new Texture(Gdx.files.internal("buildings/library.png"))),
             -30, 30, BuildingType.LEARNING));
+        events.add (new Event("Roses",
+          "Time to compete!\nMake sure you have enough sports buildings",
+          new Image(new Texture(Gdx.files.internal("buildings/stadium.png"))),
+          -30, 30,
+          BuildingType.RECREATION));
     }
 
     public Event getCurrentEvent() {

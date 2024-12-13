@@ -12,6 +12,9 @@ import io.github.unisim.achievement.WelcomeRequirement;
 import io.github.unisim.building.BuildingType;
 import io.github.unisim.world.World;
 
+/**
+ * A bar to display achievements.
+ */
 public class AchievementBar {
     ShapeActor bar;
     private Table achievementsTable = new Table();
@@ -28,7 +31,13 @@ public class AchievementBar {
     private Cell<Label> achievementDescriptionCell;
     private Cell<Image> achievementIconCell;
 
-    public AchievementBar(Stage stage, World world) {
+  /**
+   * Create a new AchievementBar and add its components.
+   *
+   * @param stage - The stage to draw the achievementBar.
+   * @param world - The world to access achievements from.
+   */
+  public AchievementBar(Stage stage, World world) {
         this.world = world;
 
         currentAchievement = new Achievement("Start",
@@ -55,7 +64,10 @@ public class AchievementBar {
         achievementsTable.setVisible(false);
     }
 
-    public void update() {
+  /**
+   * Called when the ui needs to be updated, usually on every frame.
+   */
+  public void update() {
         currentAchievement = world.getCurrentAchievement();
         if (currentAchievement != null) {
             setVisible(true);
@@ -78,7 +90,12 @@ public class AchievementBar {
             achievementIconCell.setActor(currentAchievement.icon);
         }
     }
+  /**
+   * Update the bounds of the background & table actors to fit the new size of the screen.
 
+   * @param width - The new width of the screen in pixels.
+   * @param height - The enw height of the screen in pixels.
+   */
     public void resize(int width, int height) {
         float barWidth = height * 0.6f;
         float barHeight = height * 0.1f;

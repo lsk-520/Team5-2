@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -21,6 +22,7 @@ public class SettingsScreen implements Screen {
   private Label volumeLabel;
   private TextButton backButton;
   private TextButton changeUsernameButton;
+  private TextButton tutorialButton;
   private InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
   final String[] newUsername = {""};
@@ -81,10 +83,20 @@ public class SettingsScreen implements Screen {
       }
     });
 
+    // Tutorial button
+    tutorialButton = new TextButton("Tutorial", skin);
+    tutorialButton.setSize(200, 50);
+    tutorialButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        GameState.currentScreen = GameState.tutorialScreen;
+      }
+    });
+
     // Back button
     backButton = new TextButton("Back", skin);
     backButton.setPosition(150, 80);
-    backButton.setSize(200, 60);
+    backButton.setSize(200, 50);
     backButton.addListener(new ClickListener() {
       @Override
       public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
@@ -99,11 +111,14 @@ public class SettingsScreen implements Screen {
     table.pad(100, 100, 100, 100);
     table.add(volumeLabel).center();
     table.row();
-    table.add(volumeSlider).center().width(250).height(67).padBottom(10);
+    table.add(volumeSlider).center().width(250).height(57);
     table.row();
-    table.add(changeUsernameButton).center().width(250).height(67).padBottom(10);
+    table.add(changeUsernameButton).center().width(250).height(57).padBottom(10);
     table.row();
-    table.add(backButton).center().width(250).height(67);
+    table.add(tutorialButton).center().width(250).height(57).padBottom(10);
+    table.row();
+    table.add(backButton).center().width(250).height(57);
+    //table.setDebug(true);
     stage.addActor(table);
 
     inputMultiplexer.addProcessor(GameState.fullscreenInputProcessor);

@@ -17,12 +17,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Creates a leaderboard to display the leaderboard.
+ *
+ * <p>Handles both logic and ui components.</p>
+ */
 public class Leaderboard {
     private ShapeActor bar;
     private Table boardTable = new Table();
     private Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
     private World world;
+    private Stage stage;
 
     private Label titleLabel;
     private ArrayList<Label> userLabels = new ArrayList<Label>();
@@ -37,7 +43,13 @@ public class Leaderboard {
     private boolean shown = false;
     private ArrayList<String[]> leaderboard;
 
-    public Leaderboard(Stage stage, World world) {
+  /**
+   * Creates a new leaderboard and adds its components to the stage.
+   *
+   * @param stage The stage to draw the leaderboard on.
+   * @param world The world to access the current user's score from.
+   */
+  public Leaderboard(Stage stage, World world) {
         this.world = world;
         bar = new ShapeActor(GameState.UIPrimaryColour);
         this.setVisible(false);
@@ -146,6 +158,7 @@ public class Leaderboard {
       }
       this.setVisible(true);
 
+      this.stage = stage;
       stage.act(delta);
       stage.draw();
     }
