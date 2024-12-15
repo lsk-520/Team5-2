@@ -1,5 +1,6 @@
 package io.github.unisim.ui;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -24,6 +25,7 @@ public class SettingsScreen implements Screen {
   private TextButton changeUsernameButton;
   private TextButton tutorialButton;
   private InputMultiplexer inputMultiplexer = new InputMultiplexer();
+  private Screen returnScreen;
 
   final String[] newUsername = {""};
 
@@ -33,6 +35,7 @@ public class SettingsScreen implements Screen {
   public SettingsScreen() {
     stage = new Stage();
     table = new Table();
+    returnScreen = GameState.startScreen;
 
     // Volume label
     volumeLabel = new Label("Volume: ", skin);
@@ -101,7 +104,7 @@ public class SettingsScreen implements Screen {
       @Override
       public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
         // Go back to the start menu
-        GameState.currentScreen = GameState.startScreen;
+        GameState.currentScreen = returnScreen;
       }
     });
 
@@ -138,6 +141,8 @@ public class SettingsScreen implements Screen {
       GameState.settings.setUsername(newUsername[0]);
     }
     GameState.settings.setVolume(volumeSlider.getValue());
+
+    returnScreen = GameState.mainScreen;
 
     // Draw the stage containing the volume slider and buttons
     stage.act(delta);

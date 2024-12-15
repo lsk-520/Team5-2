@@ -59,6 +59,7 @@ public class StartMenuScreen implements Screen {
       public void clicked(InputEvent event, float x, float y) {
         // Switch to the game screen
         GameState.currentScreen = GameState.gameScreen;
+        GameState.mainScreen = GameState.gameScreen;
       }
     });
 

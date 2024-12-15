@@ -27,17 +27,18 @@ public class InfoBar {
   private Label scoreLabel;
   private Label titleLabel = new Label("UniSim", skin);
   private Label timerLabel;
-  private TextButton backButton;
   private Texture pauseTexture = new Texture("ui/pause.png");
   private Texture playTexture = new Texture("ui/play.png");
   private Image pauseImage = new Image(pauseTexture);
   private Image playImage = new Image(playTexture);
+  private Texture settingsTexture = new Texture("ui/settings_icon.png");
+  private Image settingsButton = new Image(settingsTexture);
   private Timer timer;
   private Score score;
   private Cell<Label> timerLabelCell;
   private Cell<Label> scoreLabelCell;
   private Cell<Image> pauseButtonCell;
-  private Cell<TextButton> backButtonCell;
+  private Cell<Image> settingsButtonCell;
   private Cell<Table> buildingCountersTableCell;
   private Cell[] buildingCounterCells;
   private int buildingTypesCount;
@@ -69,22 +70,20 @@ public class InfoBar {
     // Info Table
     timerLabel = new Label(timer.getRemainingTime(), skin);
     scoreLabel = new Label(score.getScoreString(), skin);
-    backButton = new TextButton("main menu", skin);
     infoTable.center().center();
+    settingsButtonCell = infoTable.add(settingsButton).align(Align.center);
     pauseButtonCell = infoTable.add(playImage).align(Align.center);
     timerLabelCell = infoTable.add(timerLabel).align(Align.center);
-    backButtonCell = infoTable.add(backButton).align(Align.center);
     scoreLabelCell = infoTable.add(scoreLabel).align(Align.center);
     buildingCountersTableCell = infoTable.add(buildingCountersTable).expandX().align(Align.right);
 
     // Back button
-    backButton.addListener(new ClickListener() {
+    settingsButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        GameState.currentScreen = GameState.startScreen;
+        GameState.currentScreen = GameState.settingScreen;
       }
     });
-
 
     // Pause button
     pauseImage.addListener(new ClickListener() {
@@ -130,7 +129,7 @@ public class InfoBar {
         + Integer.toString(world.getBuildingCount(BuildingType.FOOD)));
     pauseButtonCell.setActor(GameState.paused ? playImage : pauseImage);
 
-    backButton.setVisible(!GameState.gameOver);
+    settingsButton.setVisible(!GameState.gameOver);
   }
 
   /**
@@ -161,9 +160,7 @@ public class InfoBar {
 
     pauseButtonCell.width(height * 0.03f).height(height * 0.03f).padLeft(height * 0.01f).padRight(height * 0.01f);
 
-    backButton.getLabel().setFontScale(height * 0.002f);
-    backButtonCell.width(height * 0.2f).height(height * 0.04f);
-    backButtonCell.padLeft(height * 0.02f).padRight(height * 0.01f);
+    settingsButtonCell.width(height * 0.03f).height(height * 0.03f).padLeft(height * 0.01f).padRight(height * 0.01f);
 
     titleLabel.setFontScale(height * 0.003f);
   }

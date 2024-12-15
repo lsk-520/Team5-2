@@ -28,6 +28,7 @@ public class GameState {
   public static Screen settingScreen = new SettingsScreen();
   public static Screen tutorialScreen = new TutorialScreen();
   public static Screen currentScreen;
+  public static Screen mainScreen;
   // Create an unmodifiable set containing the IDs of all buildable tiles
   // we use a set to make searching more efficient
   public static Set<Integer> buildableTiles = Stream.of(

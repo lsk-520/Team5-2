@@ -1,5 +1,6 @@
 package io.github.unisim.ui;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -91,6 +92,8 @@ public class TutorialScreen implements Screen {
   @Override
   public void render(float delta) {
     ScreenUtils.clear(GameState.UISecondaryColour);
+
+    mMenuButton.setVisible(GameState.mainScreen == GameState.startScreen);
 
     stage.act(delta);
     stage.draw();

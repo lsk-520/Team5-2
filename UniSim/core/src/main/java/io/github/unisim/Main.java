@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.sun.management.internal.GarbageCollectorExtImpl;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all
@@ -16,6 +17,7 @@ public class Main extends Game {
     @Override
     public void create() {
         GameState.currentScreen = GameState.startScreen;
+        GameState.mainScreen = GameState.startScreen;
         music = Gdx.audio.newMusic(Gdx.files.internal("assets/sound/bg_music.mp3"));
         music.setLooping(true);
         music.play();
