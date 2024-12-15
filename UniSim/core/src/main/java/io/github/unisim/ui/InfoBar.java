@@ -2,12 +2,9 @@ package io.github.unisim.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import io.github.unisim.GameState;
@@ -30,6 +27,7 @@ public class InfoBar {
   private Label scoreLabel;
   private Label titleLabel = new Label("UniSim", skin);
   private Label timerLabel;
+  private TextButton backButton;
   private Texture pauseTexture = new Texture("ui/pause.png");
   private Texture playTexture = new Texture("ui/play.png");
   private Image pauseImage = new Image(pauseTexture);
@@ -39,6 +37,7 @@ public class InfoBar {
   private Cell<Label> timerLabelCell;
   private Cell<Label> scoreLabelCell;
   private Cell<Image> pauseButtonCell;
+  private Cell<TextButton> backButtonCell;
   private Cell<Table> buildingCountersTableCell;
   private Cell[] buildingCounterCells;
   private int buildingTypesCount;
@@ -67,15 +66,25 @@ public class InfoBar {
     buildingCounterCells[3] = buildingCountersTable.add(buildingCounterLabels[3]);
     buildingCounterCells[4] = buildingCountersTable.add(buildingCounterLabels[4]);
 
-
     // Info Table
     timerLabel = new Label(timer.getRemainingTime(), skin);
     scoreLabel = new Label(score.getScoreString(), skin);
+    backButton = new TextButton("main menu", skin);
     infoTable.center().center();
     pauseButtonCell = infoTable.add(playImage).align(Align.center);
     timerLabelCell = infoTable.add(timerLabel).align(Align.center);
+    backButtonCell = infoTable.add(backButton).align(Align.center);
     scoreLabelCell = infoTable.add(scoreLabel).align(Align.center);
     buildingCountersTableCell = infoTable.add(buildingCountersTable).expandX().align(Align.right);
+
+    // Back button
+    backButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        GameState.currentScreen = GameState.startScreen;
+      }
+    });
+
 
     // Pause button
     pauseImage.addListener(new ClickListener() {
@@ -120,6 +129,8 @@ public class InfoBar {
     buildingCounterLabels[4].setText("Food: "
         + Integer.toString(world.getBuildingCount(BuildingType.FOOD)));
     pauseButtonCell.setActor(GameState.paused ? playImage : pauseImage);
+
+    backButton.setVisible(!GameState.gameOver);
   }
 
   /**
@@ -143,11 +154,16 @@ public class InfoBar {
     timerLabel.setFontScale(height * 0.002f);
     timerLabelCell.width(height * 0.08f).height(height * 0.05f);
     timerLabelCell.padLeft(height * 0.005f);
+
     scoreLabel.setFontScale(height * 0.002f);
     scoreLabelCell.width(height * 0.04f).height(height * 0.05f);
     scoreLabelCell.padLeft(Math.min(width, height * 2) * 0.14f);
-    pauseButtonCell.width(height * 0.03f).height(height * 0.03f)
-    .padLeft(height * 0.01f).padRight(height * 0.01f);
+
+    pauseButtonCell.width(height * 0.03f).height(height * 0.03f).padLeft(height * 0.01f).padRight(height * 0.01f);
+
+    backButton.getLabel().setFontScale(height * 0.002f);
+    backButtonCell.width(height * 0.2f).height(height * 0.04f);
+    backButtonCell.padLeft(height * 0.02f).padRight(height * 0.01f);
 
     titleLabel.setFontScale(height * 0.003f);
   }

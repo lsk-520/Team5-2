@@ -270,14 +270,14 @@ public class BuildingManager {
 
       // Change score proportionally to the ratio of buildings to each other
       float adj1 = 0.8f; // When variance below this, the score increases (approx +adj1 per second with perfect variance)
-      float adj2 = 5f; // Scales the change.
+      float adj2 = 6f; // Scales the change.
       float scoreChange = -(variance() - adj1) / adj2;
       world.updateScore(scoreChange);
 
       // Change score depending on the average density.
       float overallDensity = density();
       if (overallDensity < 0.3) {
-        world.updateScore(-(1f-overallDensity));
+        world.updateScore(-(1f-overallDensity) * 0.8f);
       }
       else {
         world.updateScore(0.5f);

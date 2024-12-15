@@ -20,9 +20,11 @@ public class StartMenuScreen implements Screen {
   private Stage stage;
   private Table table;
   private Skin skin;
-  private Label welcomeLabel;
+  private Label unisimLabel;
+  private Label usernameLabel;
   private TextButton playButton;
   private TextButton settingsButton;
+  private TextButton tutorialButton;
   private InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
   private Random random = new Random();
@@ -42,8 +44,13 @@ public class StartMenuScreen implements Screen {
       .toString();
     GameState.settings.setUsername(randomUsername);
 
+    // UniSim title
+    unisimLabel = new Label("UniSim", skin);
+    unisimLabel.setFontScale(2.5f);
+
     // Welcome message
-    welcomeLabel = new Label("Welcome " + GameState.settings.getUsername() + "!", skin);
+    usernameLabel = new Label("You're playing as: " + GameState.settings.getUsername() + "!", skin);
+    usernameLabel.setFontScale(1f);
 
     // Play button
     playButton = new TextButton("Play", skin);
@@ -65,15 +72,28 @@ public class StartMenuScreen implements Screen {
       }
     });
 
+    tutorialButton = new TextButton("Tutorial", skin);
+    tutorialButton.setSize(200, 50);
+    tutorialButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        GameState.currentScreen = GameState.tutorialScreen;
+      }
+    });
+
     // Add UI elements to the stage
     table.setFillParent(true);
     table.center().center();
     table.pad(100, 100, 100, 100);
-    table.add(welcomeLabel).expandX().align(Align.center).padBottom(20);
+    table.add(unisimLabel).expandX().align(Align.center).padBottom(20);
+    table.row();
+    table.add(usernameLabel).expandX().align(Align.center).padBottom(20);
     table.row();
     table.add(playButton).center().width(250).height(80).padBottom(8);
     table.row();
-    table.add(settingsButton).center().width(250).height(50);
+    table.add(settingsButton).center().width(250).height(50).padBottom(8);
+    table.row();
+    table.add(tutorialButton).center().width(250).height(50).padBottom(8);
     stage.addActor(table);
 
     inputMultiplexer.addProcessor(GameState.fullscreenInputProcessor);
@@ -90,7 +110,7 @@ public class StartMenuScreen implements Screen {
     ScreenUtils.clear(GameState.UISecondaryColour);
 
     // Set welcome label
-    welcomeLabel.setText("Welcome " + GameState.settings.getUsername() + "!");
+    usernameLabel.setText("You're playing as: " + GameState.settings.getUsername());
 
     // Draw the stage containing buttons
     stage.act(delta);

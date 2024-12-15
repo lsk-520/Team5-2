@@ -10,37 +10,73 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.unisim.GameState;
 
 public class TutorialScreen implements Screen {
   private Stage stage;
   private Table table;
-  private Skin skin = GameState.defaultSkin;
+  private Skin skin;
   private Label titleLabel;
   private Label descriptionLabel;
-  private TextButton backButton;
+  private TextButton mMenuButton;
+  private TextButton settingsButton;
   private InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
   public TutorialScreen() {
     stage = new Stage();
     table = new Table();
+    skin = GameState.defaultSkin;
 
-    // Back button
-    backButton = new TextButton("Back", skin);
-    backButton.setPosition(150, 80);
-    backButton.setSize(200,50);
-    backButton.addListener(new ClickListener() {
+    String descriptionText = "  - Rotate buildings when placing them by pressing 'R'\n"
+                           + "  - Watch out for events happening through the game\n"
+                           + "  - Change your username by going into settings\n"
+                           + "  - Keep buildings close together to increase satisfaction - don't make your students walk too far!\n"
+                           + "  - Place the same number of different types of buildings\n"
+                           + "  - Remember you can press pause at any time! ";
+
+    // Title label
+    titleLabel = new Label("Playing tips!", skin);
+
+    descriptionLabel = new Label(descriptionText, skin);
+    descriptionLabel.setWrap(true);
+
+    // Main menu button
+    mMenuButton = new TextButton("Main menu", skin);
+    mMenuButton.setPosition(150, 80);
+    mMenuButton.setSize(100,50);
+    mMenuButton.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        GameState.currentScreen = GameState.startScreen;
+      }
+    });
+
+    // Settings button
+    settingsButton = new TextButton("Settings", skin);
+    settingsButton.setPosition(150,80);
+    settingsButton.setSize(100,50);
+    settingsButton.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         GameState.currentScreen = GameState.settingScreen;
       }
     });
 
+    Table buttonTable = new Table();
+    buttonTable.add(mMenuButton).width(100).height(57).padRight(8);
+    buttonTable.add(settingsButton).width(100).height(57);
+
     table.setFillParent(true);
     table.center().center();
     table.pad(100,100,100,100);
-    table.add(backButton).center().width(250).height(57);
+    table.add(titleLabel).expandX().align(Align.center).padBottom(8);
+    table.row();
+    table.add(descriptionLabel).center().width(350).height(180).padBottom(8);
+    table.row();
+    table.add(buttonTable).expandX().center().width(250).height(57);
+    //table.setDebug(true);
     stage.addActor(table);
 
     inputMultiplexer.addProcessor(GameState.fullscreenInputProcessor);
@@ -53,6 +89,8 @@ public class TutorialScreen implements Screen {
   @Override
   public void render(float delta) {
     ScreenUtils.clear(GameState.UISecondaryColour);
+
+
 
     stage.act(delta);
     stage.draw();

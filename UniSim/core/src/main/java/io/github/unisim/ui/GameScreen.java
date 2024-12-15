@@ -36,7 +36,7 @@ public class GameScreen implements Screen {
    * Constructor for the GameScreen.
    */
   public GameScreen() {
-    timer = new Timer(300_000);
+    timer = new Timer(10_000);
     score = new Score(50);
     world = new World(score, timer);
     worldInputProcessor = new WorldInputProcessor(world);
@@ -74,6 +74,7 @@ public class GameScreen implements Screen {
     stage.draw();
     if (GameState.gameOver) {
       leaderboard.show(stage, delta);
+      leaderboard.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
       stage.draw();
       world.zoom((world.getMaxZoom() - world.getZoom()) * 2f);
       world.pan((90 - world.getCameraPos().x) / 10, -world.getCameraPos().y / 10);
