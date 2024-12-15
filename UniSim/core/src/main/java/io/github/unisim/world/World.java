@@ -26,7 +26,6 @@ import io.github.unisim.building.BuildingType;
 import io.github.unisim.event.Event;
 import io.github.unisim.event.EventManager;
 import io.github.unisim.score.Score;
-import io.github.unisim.ui.Leaderboard;
 
 /**
  * A class that holds all the gameplay elements of the game UniSim.

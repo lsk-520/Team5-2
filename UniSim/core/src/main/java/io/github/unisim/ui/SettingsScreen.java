@@ -113,11 +113,11 @@ public class SettingsScreen implements Screen {
     table.row();
     table.add(volumeSlider).center().width(250).height(57);
     table.row();
-    table.add(changeUsernameButton).center().width(250).height(57).padBottom(10);
+    table.add(changeUsernameButton).center().width(250).height(40).padBottom(10);
     table.row();
-    table.add(tutorialButton).center().width(250).height(57).padBottom(10);
+    table.add(tutorialButton).center().width(250).height(40).padBottom(10);
     table.row();
-    table.add(backButton).center().width(250).height(57);
+    table.add(backButton).center().width(250).height(40);
     //table.setDebug(true);
     stage.addActor(table);
 

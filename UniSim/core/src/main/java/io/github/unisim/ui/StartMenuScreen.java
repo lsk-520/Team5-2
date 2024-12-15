@@ -89,11 +89,11 @@ public class StartMenuScreen implements Screen {
     table.row();
     table.add(usernameLabel).expandX().align(Align.center).padBottom(20);
     table.row();
-    table.add(playButton).center().width(250).height(80).padBottom(8);
+    table.add(playButton).center().width(250).height(70).padBottom(8);
     table.row();
-    table.add(settingsButton).center().width(250).height(50).padBottom(8);
+    table.add(settingsButton).center().width(250).height(40).padBottom(8);
     table.row();
-    table.add(tutorialButton).center().width(250).height(50).padBottom(8);
+    table.add(tutorialButton).center().width(250).height(40).padBottom(8);
     stage.addActor(table);
 
     inputMultiplexer.addProcessor(GameState.fullscreenInputProcessor);

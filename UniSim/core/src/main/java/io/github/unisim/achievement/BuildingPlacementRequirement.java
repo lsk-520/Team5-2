@@ -1,5 +1,7 @@
 package io.github.unisim.achievement;
 
+import com.badlogic.gdx.Game;
+import io.github.unisim.GameState;
 import io.github.unisim.building.BuildingType;
 import io.github.unisim.world.World;
 

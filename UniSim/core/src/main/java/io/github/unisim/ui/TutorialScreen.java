@@ -38,7 +38,9 @@ public class TutorialScreen implements Screen {
 
     // Title label
     titleLabel = new Label("Playing tips!", skin);
+    titleLabel.setFontScale(1.5f);
 
+    // Description label
     descriptionLabel = new Label(descriptionText, skin);
     descriptionLabel.setWrap(true);
 
@@ -65,8 +67,8 @@ public class TutorialScreen implements Screen {
     });
 
     Table buttonTable = new Table();
-    buttonTable.add(mMenuButton).width(100).height(57).padRight(8);
-    buttonTable.add(settingsButton).width(100).height(57);
+    buttonTable.add(mMenuButton).width(150).height(40).padRight(8);
+    buttonTable.add(settingsButton).width(150).height(40);
 
     table.setFillParent(true);
     table.center().center();
@@ -75,7 +77,7 @@ public class TutorialScreen implements Screen {
     table.row();
     table.add(descriptionLabel).center().width(350).height(180).padBottom(8);
     table.row();
-    table.add(buttonTable).expandX().center().width(250).height(57);
+    table.add(buttonTable).expandX().center().width(350).height(40);
     //table.setDebug(true);
     stage.addActor(table);
 
@@ -89,8 +91,6 @@ public class TutorialScreen implements Screen {
   @Override
   public void render(float delta) {
     ScreenUtils.clear(GameState.UISecondaryColour);
-
-
 
     stage.act(delta);
     stage.draw();

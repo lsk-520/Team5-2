@@ -367,15 +367,15 @@ public class BuildingManager {
       buildingsDistance.get(cleanBuildings.indexOf(building)).add(i, distance);
     }
 
-    // REMOVE (FOR TESTING)
-    for (int i = 0; i < buildingsDistance.size(); i++) {
-      String print = "";
-      for (int j = 0; j < buildingsDistance.get(i).size(); j++) {
-        print += buildingsDistance.get(i).get(j) + " ";
-      }
-      Gdx.app.log("matrix", print);
-    }
-    Gdx.app.log("matrix"," ");
+//    // REMOVE (FOR TESTING)
+//    for (int i = 0; i < buildingsDistance.size(); i++) {
+//      String print = "";
+//      for (int j = 0; j < buildingsDistance.get(i).size(); j++) {
+//        print += buildingsDistance.get(i).get(j) + " ";
+//      }
+//      Gdx.app.log("matrix", print);
+//    }
+//    Gdx.app.log("matrix"," ");
   }
 
   /**

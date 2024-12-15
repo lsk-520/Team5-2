@@ -66,7 +66,7 @@ public class EventManager {
      */
     public void nextEvent() {
       int nextEvent = currentEvent;
-      while (pastEvents.contains(events.get(nextEvent))) {
+      while (pastEvents.contains(events.get(nextEvent)) || nextEvent == currentEvent) {
         nextEvent = rand.nextInt(events.size());
       }
       pastEvents.add(events.get(currentEvent));

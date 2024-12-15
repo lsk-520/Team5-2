@@ -20,6 +20,7 @@ public class AchievementManager {
 
     private World world;
     private Timer displayTimer;
+    private Image achievementImage;
 
     /**
      * Adds the achievements to the list possible to achieve by the player. Sets the display timer for the initial
@@ -28,38 +29,39 @@ public class AchievementManager {
     public AchievementManager(World world) {
         displayTimer = new Timer(10_000);
         this.world = world;
+        achievementImage = new Image(new Texture("achievements/trophy.png"));
 
         // The initial message to display to the user when the game starts.
         achievements.add(new Achievement("Welcome!",
             "Increase score to win the game!",
-            new Image(new Texture(Gdx.files.internal("buildings/accommodation.png"))),
+            achievementImage,
             0,
             new WelcomeRequirement()));
         displayQueue.add(achievements.get(0));
 
         achievements.add(new Achievement("High Achiever",
             "You've maintained a high score for over a minute!",
-            new Image(new Texture(Gdx.files.internal("achievements/trophy.png"))),
+            achievementImage,
             10,
             new MaintainScoreRequirement(60_000f, 80f)));
         achievements.add(new Achievement("Maximalist",
             "You've placed 20 buildings!",
-            new Image(new Texture(Gdx.files.internal("achievements/trophy.png"))),
+            achievementImage,
             10,
             new BuildingPlacementRequirement(BuildingType.values(), 20)));
         achievements.add(new Achievement("Academic weapon",
             "Your students can work hard and do well!",
-            new Image(new Texture(Gdx.files.internal("buildings/library.png"))),
+            achievementImage,
             10,
             new BuildingPlacementRequirement(new BuildingType[]{BuildingType.LEARNING}, 5)));
         achievements.add(new Achievement("Slacker",
             "You've placed 0 buildings! Is this even a university?",
-            new Image(new Texture(Gdx.files.internal("achievements/trophy.png"))),
+            achievementImage,
             1,
             new BuildingPlacementRequirement(BuildingType.values(), 0, 500)));
         achievements.add(new Achievement("Minimalist",
             "You've only placed 5 buildings!",
-            new Image(new Texture(Gdx.files.internal("achievements/trophy.png"))),
+            achievementImage,
             10,
             new BuildingPlacementRequirement(BuildingType.values(), 5, 500)));
 
