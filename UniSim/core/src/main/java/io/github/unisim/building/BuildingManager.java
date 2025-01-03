@@ -28,11 +28,16 @@ public class BuildingManager {
   private World world;
   private float timePassed = 0f;
 
-  //private float[][] buildingTypeMatrix;
+  // Records what buildings should be near other buildings.
   private Map<BuildingType, BuildingType[]> buildingTypesProximity = new HashMap<>();
 
+  /**A record of how far away each building is from each building placed on the map.   */
   private ArrayList<ArrayList<Float>> buildingsDistance = new ArrayList<>();
 
+  /**
+   * @param isoTransform The isometric transformation matrix needed for drawing textures.
+   * @param world The world of the game.
+   */
   public BuildingManager(Matrix4 isoTransform, World world) {
     this.isoTransform = isoTransform;
     this.world = world;
@@ -275,8 +280,9 @@ public class BuildingManager {
       world.updateScore(scoreChange);
 
       // Change score depending on the average density.
+      float adj3 = 0.3f; // When density below this, score decreases, otherwise increases.
       float overallDensity = density();
-      if (overallDensity < 0.3) {
+      if (overallDensity < adj3) {
         world.updateScore(-(1f-overallDensity) * 0.8f);
       }
       else {
@@ -289,14 +295,14 @@ public class BuildingManager {
    * Calculates the variance of the number of the buildings.
    */
   private float variance() {
-    // Calculates the mean.
+    // Calculates the mathematical mean.
     float mean = 0f;
     for (int i = 0; i < BuildingType.values().length; i++) {
       mean += world.getBuildingCount(BuildingType.values()[i]);
     }
     mean = mean / BuildingType.values().length;
 
-    // Calculates the variance.
+    // Calculates the mathematical variance.
     float variance = 0f;
     for (int i = 0; i < BuildingType.values().length; i++) {
       variance += (float)Math.pow(world.getBuildingCount(BuildingType.values()[i]) - mean, 2);
@@ -314,19 +320,19 @@ public class BuildingManager {
   private float density() {
     float radius = 30f; // Radius to check buildings in.
     float overallDensity = 0f;
-    ArrayList<Building> cleanBuildings = getCleanBuildings();
+    ArrayList<Building> mapBuildings = getMapBuildings();
 
     // Get the maximum average density
     float averageSize = ((4f*4f) + (20f*12f) + (8f*12f) + (12f*11f) + (4f*5f)) / 5f; // Size of buildings in BuildingMenu
     float averageCount = (radius*radius) / averageSize;
 
     // Removes division by 0 errors.
-    if (cleanBuildings.isEmpty()) {
+    if (mapBuildings.isEmpty()) {
       return 0f;
     }
 
     // Calculates density around each building.
-    for (int i = 0; i < cleanBuildings.size(); i++) {
+    for (int i = 0; i < mapBuildings.size(); i++) {
       // Gets neighbours, which contains the distances of buildings within the radius of building, that
       // are not building itself.
       ArrayList<Float> neighbours = new ArrayList<>();
@@ -341,7 +347,7 @@ public class BuildingManager {
       overallDensity += density;
     }
     // Averages the density.
-    overallDensity = overallDensity / cleanBuildings.size();
+    overallDensity = overallDensity / mapBuildings.size();
     return overallDensity;
   }
 
@@ -355,7 +361,7 @@ public class BuildingManager {
       return;
     }
     // Remove previewBuilding from the list of buildings.
-    ArrayList<Building> cleanBuildings= getCleanBuildings();
+    ArrayList<Building> cleanBuildings = getMapBuildings();
     // Calculates distance and adds into distance matrix.
     buildingsDistance.add(cleanBuildings.indexOf(building), new ArrayList<>());
     for (int i = 0; i < cleanBuildings.size(); i++) {
@@ -366,16 +372,6 @@ public class BuildingManager {
       }
       buildingsDistance.get(cleanBuildings.indexOf(building)).add(i, distance);
     }
-
-//    // REMOVE (FOR TESTING)
-//    for (int i = 0; i < buildingsDistance.size(); i++) {
-//      String print = "";
-//      for (int j = 0; j < buildingsDistance.get(i).size(); j++) {
-//        print += buildingsDistance.get(i).get(j) + " ";
-//      }
-//      Gdx.app.log("matrix", print);
-//    }
-//    Gdx.app.log("matrix"," ");
   }
 
   /**
@@ -383,7 +379,7 @@ public class BuildingManager {
    *
    * @return {@code buildings} without {@code previewBuilding}
    */
-  private ArrayList<Building> getCleanBuildings() {
+  private ArrayList<Building> getMapBuildings() {
     ArrayList<Building> cleanBuildings= new ArrayList<>();
     for (int i = 0; i < buildings.size(); i++) {
       if (buildings.get(i) != previewBuilding) {

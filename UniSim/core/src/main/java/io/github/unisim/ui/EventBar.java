@@ -16,13 +16,12 @@ public class EventBar {
     private ShapeActor bar;
     private Table eventsTable = new Table();
     private Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
-    //cells
+
     private World world;
     private Event currentEvent;
 
     private Label eventNameLabel;
     private Label eventDescriptionLabel;
-    private Label eventImplicationsLabel;
 
     private Cell<Label> eventNameLabelCell;
     private Cell<Label> eventDescriptionLabelCell;
@@ -36,27 +35,25 @@ public class EventBar {
    */
   public EventBar(Stage stage, World world) {
 
-        // CHANGE (JUST FOR TESTING)
+        // initial event
         currentEvent = new Event("Plague",
-            "this will be the event description",
+            "event description",
             new Image(new Texture(Gdx.files.internal("buildings/pharmacy.png"))),
             2,
             1000f);
 
         this.world = world;
 
-        // do buttons and stuff
-        eventNameLabel = new Label(currentEvent.name, skin); // CHANGE when eventManager implemented
+        // Set up ui elements
+        eventNameLabel = new Label(currentEvent.name, skin);
         eventDescriptionLabel = new Label(currentEvent.description, skin);
         eventDescriptionLabel.setWrap(true);
-        eventImplicationsLabel = new Label("uh oh", skin);
 
         eventsTable.center().center();
         eventIconCell = eventsTable.add(currentEvent.icon);
         eventNameLabelCell = eventsTable.add(eventNameLabel).align(Align.center);
         eventDescriptionLabelCell = eventsTable.add(eventDescriptionLabel).align(Align.center);
         eventsTable.row();
-        //eventImplicationsCell = eventsTable.add(eventImplicationsLabel);
 
         bar = new ShapeActor(GameState.UISecondaryColour);
         stage.addActor(bar);

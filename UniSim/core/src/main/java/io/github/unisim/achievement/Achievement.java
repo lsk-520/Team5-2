@@ -3,6 +3,9 @@ package io.github.unisim.achievement;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import io.github.unisim.world.World;
 
+/**
+ * Represents an award a user can win by fulfilling requirements.
+ */
 public class Achievement {
     public String name;
     public String description;

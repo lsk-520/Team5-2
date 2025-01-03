@@ -39,6 +39,8 @@ public class AchievementManager {
             new WelcomeRequirement()));
         displayQueue.add(achievements.get(0));
 
+        // Adds possible achievements to achieve
+
         achievements.add(new Achievement("High Achiever",
             "You've maintained a high score for over a minute!",
             achievementImage,
@@ -71,7 +73,10 @@ public class AchievementManager {
         return currentAchievement;
     }
 
-    public boolean displaying() {
+  /**
+   * @return True if the there is an achievement currently being displayed, false otherwise.
+   */
+  public boolean displaying() {
         if (currentAchievement != null) {
             return true;
         }
@@ -97,7 +102,6 @@ public class AchievementManager {
         else if (displayQueue.isEmpty() && next) {
             currentAchievement = null;
         }
-
     }
 
     /**

@@ -17,9 +17,6 @@ public class Event {
     public String description;
     public Image icon;
 
-    // The initial score factor to change score by, and the value by which a chosen
-    // building type will increase the score by for new placements
-
     /**The initial factor to change score by.*/
     private float scoreFactor;
     private BuildingType buildingType;

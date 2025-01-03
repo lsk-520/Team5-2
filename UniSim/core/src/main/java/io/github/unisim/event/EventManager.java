@@ -66,6 +66,7 @@ public class EventManager {
      */
     public void nextEvent() {
       int nextEvent = currentEvent;
+      // Selects an event until one hasn't happened yet
       while (pastEvents.contains(events.get(nextEvent)) || nextEvent == currentEvent) {
         nextEvent = rand.nextInt(events.size());
       }
@@ -80,10 +81,12 @@ public class EventManager {
      */
     public float eventTick() {
         if (hasEvent) {
-            // If an event is currently in play.
+            // If an event is currently in play
             Event event = getCurrentEvent();
+            // Get the score change for the event
             float score = event.tick();
             hasEvent = !event.finished;
+            // Increment the timer for the event
             if (!hasEvent) { eventQueueTimer.reset(); }
             if (!event.isTickEvent()) {
                 if (world.getBuildingCount(event.getBuildingType()) > 1) {
@@ -93,6 +96,7 @@ public class EventManager {
             return score;
         }
         else {
+          // Increments timer between events
             hasEvent = !eventQueueTimer.tick(Gdx.graphics.getDeltaTime() * 1000f);
             if (hasEvent) { nextEvent(); }
         }

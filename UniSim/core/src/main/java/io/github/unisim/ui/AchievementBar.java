@@ -21,7 +21,6 @@ public class AchievementBar {
     private Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
     private World world;
-    // can be null
     private Achievement currentAchievement;
 
     private Label achievementNameLabel;
@@ -75,11 +74,9 @@ public class AchievementBar {
         else {
             setVisible(false);
         }
-        // and world.getNextAchievement()
-        // then call and change visability + currentAchievement
 
+        // Setting up the display for the current achievement
         if (currentAchievement != null) {
-            // currentAchievement = world.getCurrentAchievement()
             achievementNameLabel.setText(currentAchievement.name);
             achievementNameLabel.setAlignment(Align.center);
             achievementDescriptionLabel.setText(currentAchievement.description);

@@ -151,7 +151,7 @@ public class World {
         currentEvent = null;
     }
     if (!GameState.paused && !GameState.gameOver) {
-        score.incrementScore(eventManager.eventTick());
+        updateScore(eventManager.eventTick());
     }
 
     // Render the achievements bar
@@ -162,7 +162,7 @@ public class World {
         currentAchievement = null;
     }
     if (!GameState.paused && !GameState.gameOver) {
-        score.incrementScore(achievementManager.achievementDisplayTick());
+        updateScore(achievementManager.achievementDisplayTick());
     }
 
     // render buildings after all map related rendering

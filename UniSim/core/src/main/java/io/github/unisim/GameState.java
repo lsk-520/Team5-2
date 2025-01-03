@@ -27,8 +27,12 @@ public class GameState {
   public static Screen startScreen = new StartMenuScreen();
   public static Screen settingScreen = new SettingsScreen();
   public static Screen tutorialScreen = new TutorialScreen();
+
+  /** The screen the player is currently seeing  */
   public static Screen currentScreen;
+  /** The part of the game the user is navigating from - the main menu or gameplay.  */
   public static Screen mainScreen;
+
   // Create an unmodifiable set containing the IDs of all buildable tiles
   // we use a set to make searching more efficient
   public static Set<Integer> buildableTiles = Stream.of(
