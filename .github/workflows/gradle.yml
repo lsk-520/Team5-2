@@ -69,8 +69,8 @@ jobs:
     - name: Download Ubuntu Build Artifact
       uses: actions/download-artifact@v4.1.8
       with:
-        name: unisim.jar
+        name: UniSim.jar
     - name: Release
       uses: softprops/action-gh-release@v2
       with:
-        files: unisim.jar
+        files: UniSim.jar
