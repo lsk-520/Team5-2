@@ -1,7 +1,6 @@
 package io.github.unisim.world;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -64,7 +63,6 @@ public class World {
   private Achievement currentAchievement;
   private Score score;
   private Timer timer;
-  private Sound placeSound = Gdx.audio.newSound(Gdx.files.internal("assets/sound/place.mp3"));
 
   /**
    * Create a new World.
@@ -370,7 +368,6 @@ public class World {
     if (!canBuild) {
       return false;
     }
-    placeSound.setLooping(placeSound.play(GameState.settings.getVolume()), false);
     buildingManager.placeBuilding(
       new Building(
         selectedBuilding.texture, selectedBuilding.textureScale, selectedBuilding.textureOffset,

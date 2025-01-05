@@ -3,7 +3,6 @@ package io.github.unisim;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.sun.management.internal.GarbageCollectorExtImpl;
 
 /**
@@ -12,15 +11,11 @@ import com.sun.management.internal.GarbageCollectorExtImpl;
  */
 public class Main extends Game {
     private Screen currentScreen;
-    private Music music;
 
     @Override
     public void create() {
         GameState.currentScreen = GameState.startScreen;
         GameState.mainScreen = GameState.startScreen;
-        music = Gdx.audio.newMusic(Gdx.files.internal("assets/sound/bg_music.mp3"));
-        music.setLooping(true);
-        music.play();
     }
 
     @Override
@@ -29,7 +24,6 @@ public class Main extends Game {
             currentScreen = GameState.currentScreen;
             setScreen(currentScreen);
             currentScreen.resume();
-            music.setVolume(GameState.settings.getVolume()*0.75f);
         }
 
         super.render(); // Ensures the active screen is rendered

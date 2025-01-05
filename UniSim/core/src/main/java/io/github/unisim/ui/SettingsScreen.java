@@ -38,10 +38,11 @@ public class SettingsScreen implements Screen {
     returnScreen = GameState.startScreen;
 
     // Volume label
-    volumeLabel = new Label("Volume: ", skin);
-    volumeLabel.setColor(new Color(0.9f, 0.9f, 0.9f, 1.0f));
+    //volumeLabel = new Label("Volume: ", skin);
+    //volumeLabel.setColor(new Color(0.9f, 0.9f, 0.9f, 1.0f));
 
     // Volume slider
+    /*
     volumeSlider = new Slider(0.0f, 1.0f, 0.1f, false, skin);
     volumeSlider.setValue(GameState.settings.getVolume()); // Set current volume
     volumeSlider.setPosition(150, 150);
@@ -51,6 +52,7 @@ public class SettingsScreen implements Screen {
       GameState.settings.setVolume(volumeSlider.getValue());
       return false;
     });
+     */
 
     // Username input button
     changeUsernameButton = new TextButton("Change Username", skin);
@@ -112,9 +114,9 @@ public class SettingsScreen implements Screen {
     table.setFillParent(true);
     table.center().center();
     table.pad(100, 100, 100, 100);
-    table.add(volumeLabel).center();
+    //table.add(volumeLabel).center();
     table.row();
-    table.add(volumeSlider).center().width(250).height(57);
+    //table.add(volumeSlider).center().width(250).height(57);
     table.row();
     table.add(changeUsernameButton).center().width(250).height(40).padBottom(10);
     table.row();
@@ -140,7 +142,7 @@ public class SettingsScreen implements Screen {
     if (!(newUsername[0] == "")) {
       GameState.settings.setUsername(newUsername[0]);
     }
-    GameState.settings.setVolume(volumeSlider.getValue());
+    //GameState.settings.setVolume(volumeSlider.getValue());
 
     returnScreen = GameState.mainScreen;
 
