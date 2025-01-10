@@ -71,7 +71,7 @@ public class EventTests {
                                BuildingType.RECREATION);
 
 
-    assertEquals(testBuildingEvent.getAdjustment(), 0.7f);
+    assertEquals(testBuildingEvent.getAdjustment(), 21f);
     assertTrue(testTickingEvent.isTickEvent());
     assertFalse(testBuildingEvent.isTickEvent());
     assertEquals(testBuildingEvent.getBuildingType(), BuildingType.RECREATION);
