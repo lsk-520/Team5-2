@@ -137,6 +137,14 @@ public class AchievementManager {
         }
     }
 
+  /**
+   * Sets current achievement to not null
+   * Exclusively for testing
+   */
+  public void testCurrentAchievement(){
+      currentAchievement = achievements.get(1);
+    }
+
     public void reset() {
         currentAchievement = null;
         displayTimer.reset();

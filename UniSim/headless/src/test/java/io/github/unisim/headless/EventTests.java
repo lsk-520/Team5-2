@@ -67,7 +67,7 @@ public class EventTests {
     Event testBuildingEvent = new Event("Roses",
                     "Time to compete!\nMake sure you have enough sports buildings",
                                 new Image(new Texture(Gdx.files.internal("buildings/stadium.png"))),
-                               -30, 1,
+                               -30, 30,
                                BuildingType.RECREATION);
 
 
@@ -80,14 +80,11 @@ public class EventTests {
 
     assertEquals(testTickingEvent.getRemainingTime(), "00:30");
     assertEquals(testTickingEvent.tick(), 0);
-    testTickingEvent.testTimerTick();
+    testTickingEvent.testTimerTick(10_000f);
     assertEquals(testTickingEvent.getRemainingTime(), "00:20");
     testTickingEvent.reset();
     assertEquals(testTickingEvent.getRemainingTime(), "00:30");
-    for (int i = 0; i < 3; i++){
-      testTickingEvent.testTimerTick();
-    }
-    testTickingEvent.testTimerTick();
+    testTickingEvent.testTimerTick(30_000f);
     testTickingEvent.tick();
     assertEquals(testTickingEvent.getRemainingTime(), "00:30");
   }

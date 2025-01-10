@@ -61,6 +61,18 @@ public class Achievement {
         return false;
     }
 
+  /**
+   * Sets achieved to true then returns true
+   * Exclusively for testing
+   *
+   * @return achieved, which will be true
+   */
+  public boolean testAchieved(){
+      boolean ret = achieved;
+      achieved = true;
+      return ret;
+    }
+
     public void reset() {
         achieved = false;
     }

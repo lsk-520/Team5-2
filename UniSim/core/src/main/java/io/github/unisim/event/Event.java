@@ -137,11 +137,11 @@ public class Event {
         lastTickPeriod = 0;
     }
 
-  /**
-   * Increments timer by 10 seconds
-   * Used exclusively to tick time in headless test environment
-   */
-  public void testTimerTick(){
-      timer.tick(10_000f);
+    /**
+    * Increments timer by 10 seconds
+    * Used exclusively to tick time in headless test environment
+    */
+    public void testTimerTick(float timeChange){
+      timer.tick(timeChange);
     }
 }
