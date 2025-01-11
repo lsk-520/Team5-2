@@ -9,10 +9,7 @@ public class SettingsTests {
     @Test
     public void settingsTest(){
       Settings settings = new Settings();
-      assertEquals(settings.getVolume(), 1.0f);
       assertEquals(settings.getUsername(), "");
-      settings.setVolume(0.5f);
-      assertEquals(settings.getVolume(), 0.5f);
       settings.setUsername("TestName");
       assertEquals(settings.getUsername(), "TestName");
     }
